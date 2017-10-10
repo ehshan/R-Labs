@@ -39,3 +39,7 @@ rm(u1)
 
 #I
 rm(list = ls())
+
+#MATRICES #Q2
+B <- matrix(seq(1, by=2, length.out = 20), 4, 5, byrow = TRUE)
+B1 <- B[c(2,4), c(2,3)]
