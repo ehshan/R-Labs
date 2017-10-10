@@ -22,5 +22,10 @@ u4 <- u1+1
 v4 <-v1*0.8
 
 #E
-uv <- c(u1, v1)
-uvl <- length(uv)
+w <- c(u1, v1)
+wl <- length(W)
+
+#F
+w1 <- w[c(14,15,16)]
+w2 <- w[c(2,5,9,21)]
+w3 <- w[23]
