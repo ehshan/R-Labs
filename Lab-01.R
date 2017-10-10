@@ -1,21 +1,26 @@
-#VECTORS 
-#Q1
+#VECTORS #Q1
+
+#A
 u1 <-seq(-10,0)
 u2 <- seq(-10,0, length.out = 11)
 u3 <- c(-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0)
 
 
-#Q2
+#B
 v1 <- seq(-0.1, by=0.5, length.out = 11)
 v2 <- seq(-0.1, 4.9, length.out = 11)
 v3 <- c(-0.1, 0.4, 0.9, 1.4, 1.9, 2.4, 2.9, 3.1, 3.9, 4.4, 4.9)
 
-#Q3
+#C
 #Sum
 s <- u1+v1
 #Product
 p <- u1*v1
 
-#Q4
+#D
 u4 <- u1+1
 v4 <-v1*0.8
+
+#E
+uv <- c(u1, v1)
+uvl <- length(uv)
