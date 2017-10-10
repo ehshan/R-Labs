@@ -1,3 +1,5 @@
-v <- seq(1,5)
-m = matrix(data = c(1,2,3,4), nrow = 2, ncol = 2)
-m1 = matrix(1:16,4,4)
+#VECTORS 
+#Q1
+v1 <-seq(-10,0)
+v2 <- seq(-10,0, length.out = 11)
+v3 <- c(-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0)
