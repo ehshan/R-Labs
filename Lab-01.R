@@ -43,3 +43,23 @@ rm(list = ls())
 #MATRICES #Q2
 B <- matrix(seq(1, by=2, length.out = 20), 4, 5, byrow = TRUE)
 B1 <- B[c(2,4), c(2,3)]
+
+
+
+# Function of create arrray of Fibonacci numbers of n length
+Fib <- function(n) {
+  if (n == 1) return(1)
+  x <- c(1, 1)
+  while (length(x) < n) {
+    index <- length(x)
+    new <- x[index] + x[index - 1]
+    x <- c(x,new)
+  }
+  return(x)
+}
+
+
+# Apply Fibonacci function of element of matrix 
+C <- matrix(Fib(9), 3,3)
+
+
