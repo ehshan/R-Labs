@@ -1,0 +1,198 @@
+---
+title: "Lab-01"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- First we learnt how to create and set values to variables in R. -->
+
+[//]:(lalal lal alk)
+
+
+## 1. Vectors 
+
+### Part a
+
+Here we create a vector of 11 consecutive numbers starting from -10. There are several ways this can be accomplished 
+
+```{r}
+seq(-10,0)
+
+seq(-10,0, length.out = 11)
+
+c(-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0)
+```
+
+### Part b
+
+Here we create a vector of 11 numbers, starting from -0.1 with intervals of 0.5. We can do this one of several ways
+
+```{r}
+seq(-0.1, by=0.5, length.out = 11)
+
+seq(-0.1, 4.9, length.out = 11)
+
+c(-0.1, 0.4, 0.9, 1.4, 1.9, 2.4, 2.9, 3.1, 3.9, 4.4, 4.9)
+```
+
+### Part c
+
+Here we calulate the sum and products of the vectors created in parts a&b
+
+```{r}
+u <- seq(-10,0)
+
+v <- seq(-0.1, by=0.5, length.out = 11)
+```
+Sum
+```{r}
+u + v
+```
+Product
+```{r}
+u * v
+```
+
+### Part d
+Here we add 1 to all the elements in vector u
+
+```{r}
+u + 1
+```
+
+And we subtract 20% from all the elements in vector v
+
+```{r}
+v * 0.8
+```
+
+
+### Part e
+Here we concatanate vectors u & v
+
+```{r}
+w <- c(u, v)
+
+w
+```
+
+
+And we report the length of the new vector
+```{r}
+length(w)
+```
+
+
+### Part f
+
+Here we return a new vectors, containing the 14th, 15th & 16th elements in vector w
+
+```{r}
+w[c(14, 15, 16)]
+```
+
+Similarly this vectors is formed of the 2nd, 5th, 9th & 21st elements of w
+
+```{r}
+w[c(2, 5, 9, 21)]
+```
+
+As w only contains 22 element this comment to return the 23rd element will return nothing
+```{r}
+w[23]
+```
+
+
+### Part g
+
+This command reassign the value the 3rd element in w to 100
+```{r}
+w[3] <- 100
+
+w
+```
+
+This command replaces the values in the 7th, 15th & 22nd positions with new values (200, 300, 400)
+```{r}
+replace(w, c(7, 15, 22), c(200, 300, 400) )
+```
+
+### Part h
+
+This command removes vector u from the enviroment
+```{r}
+rm(u)
+```
+
+### Part i
+
+This command clears the entire enviroment
+```{r}
+rm(list = ls())
+```
+
+## 2. Matrices
+
+### Part a
+
+Here we create a new matrix of dimensions 4x5, starting with the value 1 & incrementing each new value by 2.
+The matrix will be populated by row
+```{r}
+B <- matrix(seq(1, by=2, length.out = 20), 4, 5, byrow = TRUE)
+
+B
+```
+
+This command selects element that are in both the 2nd & 4th row & the 2nd and 3rd column
+
+```{r}
+B[c(2,4), c(2,3)]
+```
+
+### Part b
+
+This function creates a new vector of length n, and populates it with the Fibonacci sequence, start with the value 1
+```{r}
+Fib <- function(n) {
+  if (n == 1) return(1)
+  x <- c(1, 1)
+  while (length(x) < n) {
+    index <- length(x)
+    new <- x[index] + x[index - 1]
+    x <- c(x,new)
+  }
+  return(x)
+}
+```
+
+Now we uses the function as a parameter to create a new matrix of dimentions 3x3
+
+```{r}
+C <- matrix(Fib(9), 3,3)
+
+C
+```
+
+Here we select the elements not present in the both the 2nd and 3rd row & the 2nd & 3rd column. This returns a new vector with the element in position 1,1 of C
+
+```{r}
+C[ -c(2, 3), -c(2, 3)]
+
+```
+
+This command will return a new vector with the element in 1,1 & 1,2
+
+```{r}
+C[ -c(3), -c(2 ,3)]
+```
+
+This returns a new vector with all elements from the first row of C
+
+```{r}
+C[ , -c(2, 3)]
+```
