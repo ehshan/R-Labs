@@ -89,6 +89,11 @@ plot(x,z, xlim=range(x, x), ylim=range(z, u), col="red", main= "Plots of 2 norma
 points(x,u, pch='+', col='blue')
 
 
+# Box Plots D
+
+boxplot(x,y, names =(c("x", "y")), col=(c("lightblue","orange")),
+        main="Plots of 2 normal distributions", xlab="Distribution Values", ylab="Distrubution Name",
+        horizontal=TRUE) 
 
 
 
