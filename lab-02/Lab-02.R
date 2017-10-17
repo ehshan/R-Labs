@@ -72,5 +72,23 @@ y <- rnorm(10, mean, 1)
 y
 
 
+# Scatter Plots C
+set.seed(100)
+
+# new normal distribution
+z <- rnorm(20, 8, 1)
+
+# second dist
+u <- rnorm(20, 10, 1)
+
+plot(x, z, col="blue", main=" Plot of x vs z")
+
+plot(x, z1,  col="red")
+
+plot(x,z, xlim=range(x, x), ylim=range(z, u), col="red", main= "Plots of 2 normal distributions of x")
+points(x,u, pch='+', col='blue')
+
+
+
 
 
