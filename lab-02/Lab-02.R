@@ -49,7 +49,7 @@ s
 # Distrbutions Q2
 
 # 10 observations
-y <- rnorm(10, mean, 1)
+y <- rnorm(20, mean, 1)
 y
 
 # A
