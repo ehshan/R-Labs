@@ -1,0 +1,139 @@
+---
+title: "Lab-02"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+[//]:(lalal lal alk)
+
+## Basic Stats
+
+
+### 1. Data Sampling
+
+
+Here we create a vector of 20 random values 
+```{r}
+x <- c(10, 2, 15, 6, 4, 9, 12, 11, 3, 0, 12, 10, 9, 7, 11, 10, 8, 5, 10, 6)
+
+x
+```
+
+Here we get the number of elements in the vector
+```{r}
+length(x)
+```
+
+
+This command sums the numbers in the vector 
+
+```{r}
+sum(x)
+```
+
+
+This command gives the mean of the numbers in the vector
+```{r}
+mean(x)
+```
+
+
+This one gives the median
+```{r}
+median(x)
+```
+
+This command computes the mode of the vector
+```{r}
+names(sort(-table(x)))[1]
+```
+
+
+Here we extract the Quantile Ranges from the vector (Min, Q1, M, Q3, Max)
+```{r}
+quantile(x)
+```
+
+Here we compute the variance
+
+```{r}
+var(x)
+```
+
+
+This command computes the standard deviation
+```{r}
+sd(x)
+```
+
+
+### 2. Distrbutions
+
+Here we return a new vector y, with a normal distribution, with 20 observations, the same mean as vector x, and a standard deviation of 1
+```{r}
+y <- rnorm(20, mean(x), 1)
+
+y
+```
+
+This command computes the co-varaince of x and y 
+```{r}
+cov(x, y)
+```
+
+This command computes the correlation of x and y
+```{r}
+cor(x, y)
+```
+
+Because we have not set a seed value, the value of y will change everytime y is call. Hence the values of the co-varaince & correlation between x & y will also change everytime. We therefore set a seed value, re-assign value to y, with the same parameters
+```{r}
+set.seed(63)
+
+y <- rnorm(20, mean(x), 1)
+
+y
+```
+
+
+### 3. Scatter Plots
+We now create 2 normal distributions, each with 20 observations, and a standard deviation of 1. Vector z has a mean of 8
+```{r}
+set.seed(100)
+
+z <- rnorm(20, 8, 1)
+
+z
+```
+
+Vector u has a mean of 10
+```{r}
+u <- rnorm(20, 10, 1)
+
+u
+```
+
+This command creates a scatter plots of (x,z) & (x,u) & a legend
+```{r}
+plot(x,z, xlim=range(x, x), ylim=range(z, u), col="red", main= "Plots of 2 normal distributions of x")
+points(x,u, pch='+', col='blue')
+
+legend("topleft",pch=c(1,4), col=c("red", "blue"), c("z", "u"), box.col="black")
+```
+
+
+
+
+### 4. Box Plots
+Here we are creating box plots of x and y, against the same axis
+```{r}
+boxplot(x,y, names =(c("x", "y")), col=(c("lightblue","orange")),
+        main="Plots of 2 normal distributions", xlab="Distribution Values", ylab="Distrubution Name",
+        horizontal=TRUE) 
+```
+
+
