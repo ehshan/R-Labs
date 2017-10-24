@@ -7,5 +7,17 @@ damage <- c(26.1, 17.8, 31.3, 23.1, 27.5, 36.0, 14.1, 22.3, 19.6, 31.3, 24.0, 17
 
 fd <- cbind(distance, damage)
 
-# Basic Plot
+# Basic Plot -  y is damage, x is distance
 plot(distance, damage)
+
+# Correlation 
+cor(distance, damage)
+
+# Build the model
+# damage <- gradient(x) + intercept
+fit <- lm(damage ~ distance)
+
+#plot(fit)
+
+# display model gradient and intercept
+fit
