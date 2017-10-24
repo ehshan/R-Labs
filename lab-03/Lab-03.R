@@ -13,6 +13,7 @@ plot(distance, damage)
 # Correlation 
 cor(distance, damage)
 
+# Part 1
 # Build the model
 # damage <- gradient(x) + intercept
 fit <- lm(damage ~ distance)
@@ -21,3 +22,8 @@ fit <- lm(damage ~ distance)
 
 # display model gradient and intercept
 fit
+
+# Part 2
+# plot with regression line 
+plot(distance, damage)
+abline(fit)
