@@ -23,7 +23,10 @@ fit <- lm(damage ~ distance)
 # display model gradient and intercept
 fit
 
-# Part 2
+# Part 2 & 3
 # plot with regression line 
 plot(distance, damage)
 abline(fit)
+
+# Part 4
+summary(fit)
