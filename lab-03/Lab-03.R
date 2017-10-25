@@ -56,5 +56,9 @@ confint(fit, level=0.95)
 
 
 # Part 8
-# Predictions and confidence levels for new daTA
-predict(fit,data.frame(distance=(c(0.5, 3.5, 5))), interval="prediction")
+# Predictions and confidence intervals for new data
+predict(fit,data.frame(distance=(c(0.5, 3, 5))), interval="confidence")
+
+# Part 9 
+# Predictions and predictions levels for new data
+predict(fit,data.frame(distance=(c(0.5, 3, 5))), interval="prediction")
