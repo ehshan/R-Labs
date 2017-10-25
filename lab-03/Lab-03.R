@@ -42,10 +42,14 @@ summary(fit)
 
 
 # Part 6
-
 # News values for distance (x)
 newData <- c(0.5, 1.5, 2.5, 3.5)
 
 
 # Predictions for new observations
 predict(fit,data.frame(distance=newData, interval="confidence"))
+
+
+# Part 7
+# confidence level parameters for 95%
+confint(fit, level=0.95)
