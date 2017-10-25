@@ -39,3 +39,13 @@ summary(fit)
 
 # T & P values of data
 #t.test(distance, damage)
+
+
+# Part 6
+
+# News values for distance (x)
+newData <- c(0.5, 1.5, 2.5, 3.5)
+
+
+# Predictions for new observations
+predict(fit,data.frame(distance=newData, interval="confidence"))
