@@ -53,3 +53,8 @@ predict(fit,data.frame(distance=newData, interval="confidence"))
 # Part 7
 # confidence level parameters for 95%
 confint(fit, level=0.95)
+
+
+# Part 8
+# Predictions and confidence levels for new daTA
+predict(fit,data.frame(distance=(c(0.5, 3.5, 5))), interval="prediction")
