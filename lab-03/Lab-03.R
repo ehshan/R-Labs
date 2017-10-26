@@ -67,3 +67,17 @@ predict(fit,data.frame(distance=(c(0.5, 3, 5))), interval="prediction")
 
 # Part 10
 # Prediction intervals are always wider than confidence
+
+# Part 11
+
+# Prediction with confidence & prediction intervals
+plot(distance, damage, xlab="distance", ylab = "damage", main = "Least Squares Line with Confidence intervals and prediction intervals")
+predict_c = predict(fit,newDist,interval="confidence")
+predict_p = predict(fit,newDist,interval="prediction")
+abline(fit)
+plotLine <- data.frame(distance=seq(0,6.5,length=65)) # dummy plotline to show intervals 
+lines(plotLine$distance,predict_c[,"lwr"],col="firebrick", type="b",pch="+")
+lines(plotLine$distance,predict_c[,"upr"],col="firebrick", type="b",pch="+")
+lines(plotLine$distance,predict_p[,"upr"],col="midnightblue", type="b",pch="*")
+lines(plotLine$distance,predict_p[,"lwr"],col="midnightblue",type="b",pch="*")
+
