@@ -36,3 +36,9 @@ m
 mydata$rank <- factor(mydata$rank)
 
 mydata$rank
+
+
+# Part 5: Logistoc Regression Model
+
+glm.admit.fit = glm(admit ~ gre + gpa + rank, data = mydata, family = "binomial")
+summary(glm.admit.fit)
