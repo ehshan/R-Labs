@@ -42,3 +42,8 @@ mydata$rank
 
 glm.admit.fit = glm(admit ~ gre + gpa + rank, data = mydata, family = "binomial")
 summary(glm.admit.fit)
+
+
+# Part 6: 
+
+# This is standad one-hot encoding
