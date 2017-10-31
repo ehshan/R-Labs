@@ -12,3 +12,6 @@ head(mydata)
 summary(mydata)
 
 View(mydata)
+
+# Part: 2 Check no of observations
+nrow(mydata) # There are 400 observations
