@@ -48,6 +48,14 @@ summary(glm.admit.fit)
 
 # This is standad one-hot encoding
 
+
 # Part: 7
 
 # All the variable z-values are large, and all the variable p values are small (<0.05) hence all the variable are statistically significant  
+
+
+# Part: 8 
+
+# Probabilities for training set 
+admit.prob = predict(glm.admit.fit, type = "response")
+head(admit.prob)
