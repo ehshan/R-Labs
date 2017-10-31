@@ -29,3 +29,10 @@ sd
 m <- sapply(mydata [,-4], mean)
 
 m
+
+
+# Part: 4 Data transformation
+
+mydata$rank <- factor(mydata$rank)
+
+mydata$rank
