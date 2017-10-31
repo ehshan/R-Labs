@@ -13,5 +13,19 @@ summary(mydata)
 
 View(mydata)
 
+
 # Part: 2 Check no of observations
 nrow(mydata) # There are 400 observations
+
+
+# Part: 3  Statistics 
+
+# standard deviation
+sd <- sapply(mydata [,-4], sd) # exclude rank as it is catgorical
+
+sd
+
+# mean
+m <- sapply(mydata [,-4], mean)
+
+m
