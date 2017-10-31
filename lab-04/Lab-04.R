@@ -44,6 +44,10 @@ glm.admit.fit = glm(admit ~ gre + gpa + rank, data = mydata, family = "binomial"
 summary(glm.admit.fit)
 
 
-# Part 6: 
+# Part: 6 
 
 # This is standad one-hot encoding
+
+# Part: 7
+
+# All the variable z-values are large, and all the variable p values are small (<0.05) hence all the variable are statistically significant  
