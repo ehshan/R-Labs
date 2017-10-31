@@ -59,3 +59,10 @@ summary(glm.admit.fit)
 # Probabilities for training set 
 admit.prob = predict(glm.admit.fit, type = "response")
 head(admit.prob)
+
+
+# Part: 9 
+
+admit.pred = rep(1,400) # vector 1-4000
+admit.pred[admit.prob<0.5]=0 # convert raw probabilities for classes  
+head(admit.pred)
