@@ -1,0 +1,145 @@
+---
+title: "Lab-04.Rmd"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistic Regression 
+
+## Part 1:
+
+First we load the data and get the basic info for the dataset. We can use the summary() command
+```{r}
+mydata <-read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+
+summary(mydata)
+
+```
+
+Alternatively we can use the view() command 
+
+```{r}
+#view(mydata)
+```
+
+
+## Part 2:
+
+To check the number of observations, we can use the nrow command 
+```{r}
+nrow(mydata)
+```
+
+## Part 3:
+
+
+We can use sapply to check the standard deviation of the variables in the dataset. We exclude rank as it is a catgorical variable.
+```{r}
+sapply(mydata [,-4], sd)
+```
+
+Likewise we can use sapply for the mean values
+```{r}
+sapply(mydata [,-4], mean)
+```
+
+## Part 4: 
+
+```{r}
+mydata$rank <- factor(mydata$rank)
+
+mydata$rank
+```
+
+
+## Part 5:
+
+To fit a logistic model to the data, we can use the glm (generalised linear model) command 
+```{r}
+glm.admit.fit = glm(admit ~ gre + gpa + rank, data = mydata, family = "binomial")
+
+```
+
+Now we can use the summary() command to get details about the model
+```{r}
+summary(glm.admit.fit)
+```
+
+## Part 6:
+
+This process is standard One-hot encoding
+
+
+## Part 7:
+
+All the variable z-values are large, and all the variable p values are small (<0.05) hence all the variable are statistically significant  
+
+
+## Part 8:
+
+To obtain the raw probability predictions for the training data, we can use the following command
+```{r}
+admit.prob = predict(glm.admit.fit, type = "response")
+```
+
+We can check the values by using the head() command, which will display the first n rows
+```{r}
+head(admit.prob)
+```
+
+
+## Part 9:
+
+To convert the probabilities to class, first we create a new vector of lenght 400 (to represent each of the 400 observarions)
+```{r}
+admit.pred = rep(1,400)
+```
+
+We then use the probability data, can use a simple conditional to assign it a class. In this class if a probability if 0.5 or above for a class, it will be assigned to the class.
+```{r}
+admit.pred[admit.prob<0.5]=0 
+```
+
+We can again used the head command to show the data
+```{r}
+head(admit.pred)
+```
+
+
+## Part 10:
+
+We can use the table command to create a confusion matrix 
+```{r}
+table(admit.pred, mydata$admit)
+```
+
+
+## Part 11:
+
+First we construct a new dataframe with the mean gre and gpa values for each ranks
+```{r}
+newdata1 <- with(mydata, data.frame(gre = mean(gre), gpa = mean(gpa), rank = factor(1:4)))
+
+newdata1
+```
+
+We can then fit the linear model to the mean value to compute raw probabilities 
+```{r}
+newdata1$admit1.prob = predict(glm.admit.fit, newdata = newdata1, type = "response")
+
+newdata1
+```
+
+Finally we normalise the probabilities to predict a class, using the same process we used in part 9
+```{r}
+newdata1$admit1.pred = rep(1,4)
+
+newdata1$admit1.pred[newdata1$admit1.prob<0.5]=0
+
+newdata1
+```
