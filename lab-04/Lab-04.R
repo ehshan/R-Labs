@@ -72,3 +72,14 @@ head(admit.pred)
 
 # Confusion Matrix
 table(admit.pred, mydata$admit)
+
+
+# Part: 11
+
+newdata1 <- with(mydata, data.frame(gre = mean(gre), gpa = mean(gpa), rank = factor(1:4)))
+newdata1$admit1.prob = predict(glm.admit.fit, newdata = newdata1, type = "response")
+newdata1
+
+newdata1$admit1.pred = rep(1,4)
+newdata1$admit1.pred[newdata1$admit1.prob<0.5]=0
+newdata1
