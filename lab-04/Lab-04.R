@@ -66,3 +66,9 @@ head(admit.prob)
 admit.pred = rep(1,400) # vector 1-4000
 admit.pred[admit.prob<0.5]=0 # convert raw probabilities for classes  
 head(admit.pred)
+
+
+# Part: 10
+
+# Confusion Matrix
+table(admit.pred, mydata$admit)
