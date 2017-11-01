@@ -93,6 +93,3 @@ newdata1$admit1.pred[newdata1$admit1.prob<0.5]=0
 
 # display data
 newdata1
-
-
-rm(newdata1)
