@@ -76,10 +76,23 @@ table(admit.pred, mydata$admit)
 
 # Part: 11
 
+# get the mean values in each class
 newdata1 <- with(mydata, data.frame(gre = mean(gre), gpa = mean(gpa), rank = factor(1:4)))
+
+# get the prediction (probabilities) values (glm = general linear model)
 newdata1$admit1.prob = predict(glm.admit.fit, newdata = newdata1, type = "response")
+
+# display values
 newdata1
 
+# new vector 
 newdata1$admit1.pred = rep(1,4)
+
+# convert raw probabilities to class + add extra column
 newdata1$admit1.pred[newdata1$admit1.prob<0.5]=0
+
+# display data
 newdata1
+
+
+rm(newdata1)
