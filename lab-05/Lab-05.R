@@ -24,3 +24,16 @@ train_index <- sample(seq_len(nrow(Auto)), size = sample_size)
 # Apply split to datset
 train <- Auto[train_index, ]
 test <- Auto[-train_index, ]
+
+train
+
+# Part 2: Build the linear model
+
+# Part 2: Build the linear model
+lm.fit.train = lm(mpg~horsepower, data = train)
+
+# For when train & test are not defined 
+# lm.fit.train = lm(mpg~horsepower, data = Auto, subset = train)
+
+# Model summary 
+summary(lm.fit.train)
