@@ -52,4 +52,9 @@ lm.fit3.train = lm(mpg~poly(horsepower, 3), data = train)
 
 mean((test$mpg-predict(lm.fit3.train, test))^2)# has a smaller test error
 
+# Part 5: Analysis 
+
+# THe improvement from the linear model (1st degree) to the quadratic model (2nd) is dramatic >20%.
+# The improvement from the quadratic to cubic (3r degree) is far less pronounced <1%.
+
 
