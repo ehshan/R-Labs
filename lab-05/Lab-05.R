@@ -43,4 +43,13 @@ summary(lm.fit.train)
 # ^ 2 to get the mean squared
 mean((test$mpg-predict(lm.fit.train, test))^2)
 
+# Part 4: A polynomial mode
+lm.fit2.train = lm(mpg~poly(horsepower, 2), data = train)
+
+mean((test$mpg-predict(lm.fit2.train, test))^2)# has a smaller test error
+
+lm.fit3.train = lm(mpg~poly(horsepower, 3), data = train)
+
+mean((test$mpg-predict(lm.fit3.train, test))^2)# has a smaller test error
+
 
