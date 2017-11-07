@@ -37,3 +37,10 @@ lm.fit.train = lm(mpg~horsepower, data = train)
 
 # Model summary 
 summary(lm.fit.train)
+
+# Part 3: Estimate MSE in test set 
+
+# ^ 2 to get the mean squared
+mean((test$mpg-predict(lm.fit.train, test))^2)
+
+
