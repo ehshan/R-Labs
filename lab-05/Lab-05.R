@@ -105,3 +105,34 @@ for (i in 1:10){
 # plot results 
 ggplot(mse.degree, aes(degree, mse)) + geom_line(aes(colour = seed))
 
+# Part 7: Leave-One-Out Cross Validation
+
+# Fit a generalised linear model
+glm.fit.train <- glm(mpg~horsepower, data = train)
+
+# Get the intercep 
+coef(glm.fit.train)
+
+# load the boot library 
+library(boot)
+
+cv.error <- cv.glm(train, glm.fit.train)
+
+cv.error$delta
+
+# Put it in a loop 
+
+deltas = vector("integer", 10)
+
+for (i in 1:10){
+  
+  glm.fit.train <- glm(mpg~poly(horsepower, i), data = train)
+  
+  cv.error <- cv.glm(train, glm.fit.train)
+  
+  deltas[i] <- cv.error$delta
+  
+}
+
+plot(seq(1:10), deltas, ylab="Mean Square Error", xlab="Degree of Polynomial", main="LOOCV")
+lines(deltas, col="blue")
