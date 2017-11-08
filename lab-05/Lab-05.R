@@ -154,7 +154,6 @@ lines(deltas, col="blue")
 
 
 
-
 # Part 9: K-Folds Cross Validation
 
 cv.errors <- vector("integer", 10)
@@ -169,3 +168,10 @@ for (i in 1:10){
 
 
 cv.errors
+
+
+
+# Part 10: K-Folds single Plot
+
+plot(seq(1:10), cv.errors, ylab="Mean Square Error", xlab="Degree of Polynomial", main="K-Folds Cross Validation")
+lines(cv.errors, col="blue")
