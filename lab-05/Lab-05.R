@@ -134,5 +134,9 @@ for (i in 1:10){
   
 }
 
+# Part 8: Plot LOOCV
+
 plot(seq(1:10), deltas, ylab="Mean Square Error", xlab="Degree of Polynomial", main="LOOCV")
 lines(deltas, col="blue")
+
+# Part 8: K-Folds Cross Validation
