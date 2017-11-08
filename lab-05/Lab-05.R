@@ -10,6 +10,7 @@ summary(Auto)
 nrow(Auto)
 
 
+
 # Part 1: Split data 
 
 # Define the sample size (50% of dataset)
@@ -29,9 +30,10 @@ test <- Auto[-train_index, ]
 
 train
 
-# Part 2: Build the linear model
+
 
 # Part 2: Build the linear model
+
 lm.fit.train = lm(mpg~horsepower, data = train)
 
 # For when train & test are not defined 
@@ -40,10 +42,14 @@ lm.fit.train = lm(mpg~horsepower, data = train)
 # Model summary 
 summary(lm.fit.train)
 
+
+
 # Part 3: Estimate MSE in test set 
 
 # ^ 2 to get the mean squared
 mean((test$mpg-predict(lm.fit.train, test))^2)
+
+
 
 # Part 4: A polynomial mode
 lm.fit2.train = lm(mpg~poly(horsepower, 2), data = train)
@@ -54,13 +60,16 @@ lm.fit3.train = lm(mpg~poly(horsepower, 3), data = train)
 
 mean((test$mpg-predict(lm.fit3.train, test))^2)# has a smaller test error
 
+
+
 # Part 5: Analysis 
 
 # THe improvement from the linear model (1st degree) to the quadratic model (2nd) is dramatic >20%.
 # The improvement from the quadratic to cubic (3r degree) is far less pronounced <1%.
 
-# Part 6: Plot polynomial models 
 
+
+# Part 6: Plot polynomial models 
 
 rm(sample)
 
@@ -105,6 +114,8 @@ for (i in 1:10){
 # plot results 
 ggplot(mse.degree, aes(degree, mse)) + geom_line(aes(colour = seed))
 
+
+
 # Part 7: Leave-One-Out Cross Validation
 
 # Fit a generalised linear model
@@ -134,9 +145,27 @@ for (i in 1:10){
   
 }
 
+
+
 # Part 8: Plot LOOCV
 
 plot(seq(1:10), deltas, ylab="Mean Square Error", xlab="Degree of Polynomial", main="LOOCV")
 lines(deltas, col="blue")
 
-# Part 8: K-Folds Cross Validation
+
+
+
+# Part 9: K-Folds Cross Validation
+
+cv.errors <- vector("integer", 10)
+
+for (i in 1:10){
+  
+  glm.fit.train <- glm(mpg~poly(horsepower, i), data = train)
+  
+  # get the first value from delta 1
+  cv.errors[i] = cv.glm(train, glm.fit.train ,K=10 )$delta[1]
+}
+
+
+cv.errors
