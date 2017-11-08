@@ -141,7 +141,7 @@ for (i in 1:10){
   
   cv.error <- cv.glm(train, glm.fit.train)
   
-  deltas[i] <- cv.error$delta
+  deltas[i] <- cv.error$delta[1]
   
 }
 
@@ -149,7 +149,7 @@ for (i in 1:10){
 
 # Part 8: Plot LOOCV
 
-plot(seq(1:10), deltas, ylab="Mean Square Error", xlab="Degree of Polynomial", main="LOOCV")
+plot(seq(1:10), deltas, pch = 16, col="blue",  ylab="Mean Square Error", xlab="Degree of Polynomial", main="LOOCV")
 lines(deltas, col="blue")
 
 
@@ -175,3 +175,34 @@ cv.errors
 
 plot(seq(1:10), cv.errors, ylab="Mean Square Error", xlab="Degree of Polynomial", main="K-Folds Cross Validation")
 lines(cv.errors, col="blue")
+
+
+
+
+# Part 11: Plot K-Folds
+
+# Vector to store results
+
+plot(0,ylab="Mean Square Error", ylim = c(10,30), xlim= c(0,10), xlab="Degree of Polynomial", main="K-Folds Cross Validation")
+
+kfold.errors <- matrix(nrow=10,ncol=10)
+
+for(i in 1:10){
+  
+  set.seed(i)
+  
+  for(j in 1:10){
+    
+    glm.fit.train <- glm(mpg~poly(horsepower, j), data = train)
+    
+    kfold.errors[i, j] <- cv.glm(train, glm.fit.train ,K=10)$delta[1]
+  
+    }
+  
+  lines(kfold.errors[i, ],col=i)
+}
+
+legend(title = "degrees", "topleft",c("1","2","3","4","5","6","7","8","9","10"),lty=rep(1,10),col=1:10)
+
+
+
