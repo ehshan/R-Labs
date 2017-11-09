@@ -71,8 +71,6 @@ mean((test$mpg-predict(lm.fit3.train, test))^2)# has a smaller test error
 
 # Part 6: Plot polynomial models 
 
-rm(sample)
-
 # Dataframe 
 mse.degree <- data.frame( seed <- vector("integer", 100), degree <- vector("integer", 100), mse <- vector("double", 100))
 
@@ -113,6 +111,43 @@ for (i in 1:10){
 
 # plot results 
 ggplot(mse.degree, aes(degree, mse)) + geom_line(aes(colour = seed))
+
+
+# SIMPLE VERSION
+
+# Do the plot first 
+plot(0,ylab="Mean Square Error", ylim = c(10,30), xlim= c(0,10), xlab="Degree of Polynomial", main="Validation Sets")
+
+# Matrix instead of dataframe
+errors.ploy <- matrix(nrow=10, ncol=10 )
+
+for (i in 1:10){
+  
+  set.seed(i)
+  
+  train_index <- sample(seq_len(nrow(Auto)), size = sample_size)
+  
+  # Apply split to datset
+  train <- Auto[train_index, ]
+  test <- Auto[-train_index, ]
+  
+  
+  
+  for (j in 1:10) {
+    
+    # fit model
+    lm.fit.train <- lm(mpg~poly(horsepower, j), data = train)
+    
+    # assign to matrix
+    errors.ploy[i, j] <-mean((test$mpg-predict(lm.fit.train, test))^2)
+    
+  }
+  
+  lines(errors.ploy[i,],col=i)
+}
+
+legend("topleft",c("1","2","3","4","5","6","7","8","9","10"),lty=rep(1,10),col=1:10)
+
 
 
 
