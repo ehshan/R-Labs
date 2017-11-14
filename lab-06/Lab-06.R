@@ -22,3 +22,19 @@ titanic3$survived
 
 titanic3
 
+# Part 2: Build tree
+
+library(tree)
+
+dead = tree(titanic3$survived ~ titanic3$embarked + 
+              titanic3$sex + titanic3$sibsp + titanic3$parch +
+              titanic3$fare, titanic3)
+
+summary(dead)
+
+plot(dead)
+text(dead)
+
+# Predictors 
+# titanic3$sex   titanic3$fare  titanic3$parch
+
