@@ -38,3 +38,31 @@ text(dead)
 # Predictors 
 # titanic3$sex   titanic3$fare  titanic3$parch
 
+dead
+
+# Part 3: Sampling 
+
+# a: Split data 
+
+nrow(titanic3)
+
+# Define the sample size (50% of dataset)
+sample_size <- floor(0.75 * nrow(titanic3))
+
+
+set.seed(1)
+
+# Split data
+train_index <- sample(seq_len(nrow(titanic3)), size = sample_size)
+
+
+# Apply split to datset
+train <- titanic3[train_index, ]
+test <- titanic3[-train_index, ]
+
+nrow(train)
+
+train
+
+
+
