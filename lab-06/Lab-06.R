@@ -47,7 +47,7 @@ dead
 nrow(titanic3)
 
 # Define the sample size (50% of dataset)
-sample_size <- floor(0.75 * nrow(titanic3))
+sample_size <- floor(0.5 * nrow(titanic3))
 
 
 set.seed(1)
@@ -75,3 +75,13 @@ plot(dead2)
 text(dead2)
 
 dead2
+
+# c: Evaluate new tree using testset 
+
+
+dead.survived <- predict(dead2, newdata = test) 
+
+actual <- test$survived 
+
+table(dead.survived, actual)
+
