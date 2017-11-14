@@ -64,5 +64,14 @@ nrow(train)
 
 train
 
+# b: new tree using training set
 
+# dot denotes everything else
+dead2 = tree(train$survived ~ ., train)
 
+summary(dead2)
+
+plot(dead2)
+text(dead2)
+
+dead2
