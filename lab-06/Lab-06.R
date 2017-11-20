@@ -97,8 +97,17 @@ mean(dead.survived!= actual)
 
 set.seed(1)
 
-cv.titanic3 = cv.tree(dead2, FUN = prune.misclass)
+cv.dead = cv.tree(dead2, FUN = prune.misclass)
 
-print(cv.titanic3)
+print(cv.dead)
 
 # b: Should prune to 4 leaves
+
+# c: Prune tree
+
+# prune the tree
+prune.dead = prune.misclass(dead2,best=4)
+
+# plot the results
+plot(prune.dead) 
+text(prune.dead, pretty=0)
