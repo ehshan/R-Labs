@@ -1,0 +1,169 @@
+---
+title: "Lab-06"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Decision Trees
+
+First we need to install the relevant packages
+```{r}
+#install.packages("readr")
+#install.packages("dplyr")
+
+```
+
+Now we can load the data.
+```{r}
+library(readr)
+library(dplyr)
+
+
+titanic3 <- "https://goo.gl/At238b" %>%
+  read_csv %>% # read in the data
+  select(survived, embarked, sex, sibsp, parch, fare) %>%
+  mutate(embarked = factor(embarked), sex = factor(sex))
+
+titanic3
+```
+
+
+## Part 1:  Feature transformation
+
+We will need to convert the survived variable from a numerical to categorical, as this will be our target.  We can do this by using the as.factor() command.
+```{r}
+titanic3$survived = as.factor(titanic3$survived)
+
+```
+
+
+## Part 2: Build tree
+
+
+To construct a tree, first we will need to import the tree library.
+```{r}
+library(tree)
+```
+
+Now we can build a tree by selecting our target variable and predictors.
+```{r}
+dead = tree(titanic3$survived ~ titanic3$embarked + 
+              titanic3$sex + titanic3$sibsp + titanic3$parch +
+              titanic3$fare, titanic3)
+```
+
+We can also view a summary of the tree, which will give us structural and statistical information.
+```{r}
+summary(dead)
+```
+
+We can also visualise the tree by using the plot command.
+```{r}
+plot(dead)
+text(dead)
+```
+
+## Part 3: Sampling 
+
+### a: Split data 
+
+First we split the dataset into training and test sets.
+```{r}
+# Define the sample size (50% of dataset)
+sample_size <- floor(0.5 * nrow(titanic3))
+
+
+set.seed(1)
+
+# Split data
+train_index <- sample(seq_len(nrow(titanic3)), size = sample_size)
+
+
+# Apply split to datset
+train <- titanic3[train_index, ]
+test <- titanic3[-train_index, ]
+```
+
+
+### b: Create a new tree using training set
+
+We can now build a new tree with the same target and predictor variables using the training set.
+```{r}
+# dot denotes everything else
+dead2 = tree(survived ~ ., train)
+
+summary(dead2)
+
+plot(dead2)
+text(dead2)
+
+dead2
+```
+
+
+### c: Evaluate the new tree using the test data
+
+We can evaluate the new tree using the test set. First we will make predictions using the model, and return classes instead of probabilities.
+```{r}
+dead.survived <- predict(dead2, newdata = test, type="class") 
+
+```
+
+
+We can compare the predicted classes against the actual ones by using a confusion matrix, to check the number of correct classifications.
+```{r}
+actual <- test$survived 
+
+# Confusion Matrix
+table(dead.survived, actual)
+
+# Mean error
+mean(dead.survived!= actual)
+
+```
+
+Finally we can check the model accuracy and error rate. 
+```{r}
+#accuracy
+mean(dead.survived == actual)
+
+# Mean error
+mean(dead.survived != actual)
+
+```
+
+## Part 4: Evaluate the Tree Structure 
+
+### a: Cross Validate the tree
+
+
+We can run a cross validation on the tree to see how it can be optimised.
+```{r}
+set.seed(1)
+
+cv.dead = cv.tree(dead2, FUN = prune.misclass)
+
+print(cv.dead)
+```
+
+### b: Analysis the results
+ 
+The results suggest that the optimum tree structure has 4 leaf nodes.
+
+### c: Prune the tree
+
+We can now prune the tree using the prune function
+```{r}
+# prune the tree
+prune.dead = prune.misclass(dead2,best=4)
+
+# plot the results
+plot(prune.dead) 
+text(prune.dead, pretty=0)
+```
