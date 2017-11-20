@@ -88,3 +88,15 @@ table(dead.survived, actual)
 
 # Mean error
 mean(dead.survived!= actual)
+
+
+
+# Part 4: Evaluatet Tree Structure 
+
+# a: CV tree
+
+set.seed(1)
+
+cv.titanic3 = cv.tree(dead2, FUN = prune.misclass)
+
+print(cv.titanic3)
