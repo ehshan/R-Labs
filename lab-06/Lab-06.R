@@ -100,3 +100,5 @@ set.seed(1)
 cv.titanic3 = cv.tree(dead2, FUN = prune.misclass)
 
 print(cv.titanic3)
+
+# b: Should prune to 4 leaves
