@@ -91,7 +91,7 @@ mean(dead.survived!= actual)
 
 
 
-# Part 4: Evaluatet Tree Structure 
+# Part 4: Evaluate the Tree Structure 
 
 # a: CV tree
 
