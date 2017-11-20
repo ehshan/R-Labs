@@ -67,7 +67,7 @@ train
 # b: new tree using training set
 
 # dot denotes everything else
-dead2 = tree(train$survived ~ ., train)
+dead2 = tree(survived ~ ., train)
 
 summary(dead2)
 
@@ -79,9 +79,12 @@ dead2
 # c: Evaluate new tree using testset 
 
 
-dead.survived <- predict(dead2, newdata = test) 
+dead.survived <- predict(dead2, newdata = test, type="class") 
 
 actual <- test$survived 
 
+# Confusion Matrix
 table(dead.survived, actual)
 
+# Mean error
+mean(dead.survived!= actual)
