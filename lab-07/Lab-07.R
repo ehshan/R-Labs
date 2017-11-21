@@ -12,6 +12,14 @@ titanic3 = read.csv("..\\Week08\\titanic3.cSV", header = TRUE)
 
 titanic3
 
-titanic3=select(titanic3, -name, -ticket, -boat, -body, -home.dest, -cabin) %>% mutate(embarked = factor(embarked),sex = factor(sex), pclass=factor(embarked))
+titanic3=select(titanic3, -name, -ticket, -boat, -body, -home.dest, -cabin) ti%>% mutate(embarked = factor(embarked),sex = factor(sex), pclass=factor(embarked))
 
 summary(titanic3)
+
+# Part 1: Feature Transformation
+
+# Convert numerical variable to catagorical 
+
+titanic3$survived01 = as.factor(titanic3$survived)
+
+append(titanic3$survived01, titanic3)
