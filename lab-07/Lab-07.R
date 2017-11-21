@@ -55,7 +55,7 @@ actual01 <- titanic.clean[-train_index, "survived01"]
 
 
 
-# Part 4: Build random forest model 
+# Part 4: Build random forest model with continous target variable
 
 rf.titanic <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
 
@@ -64,3 +64,26 @@ prediction <- predict(rf.titanic, newdata = test)
 
 # confusion matrix for test error
 mean((prediction - actual) ^ 2)
+
+# stats
+rf.titanic
+
+
+# Part 5: Random forest model with catgorial variable as target
+
+rf.titanic01 <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
+
+# get predictions
+prediction01 <- predict(rf.titanic01, newdata = test)
+
+# confusion matrix for test error
+mean((prediction01 - actual01) ^ 2)
+
+# stats
+rf.titanic01
+
+# number of tree
+rf.titanic01$ntree
+
+# error
+mean(rf.titanic01$err.rate)
