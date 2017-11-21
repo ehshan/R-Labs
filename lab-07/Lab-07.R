@@ -34,3 +34,24 @@ library(randomForest)
 # remove rows with missing data
 na.omit(titanic3)
 
+
+# Part 3: Split data 
+
+set.seed(1)
+
+# split the data in half
+
+# indices 
+train_index <- sample(nrow(titanic3), nrow(titanic3)/2)
+
+# assign data
+train <- titanic3[train_index, ]
+test <- titanic3[-train_index, ]
+
+# target variable from text set 
+actual <- titanic3[-train_index, "survived01"]
+
+actual
+
+
+
