@@ -32,7 +32,7 @@ append(titanic3$survived01, titanic3)
 library(randomForest)
 
 # remove rows with missing data
-na.omit(titanic3)
+titanic.clean <- na.omit(titanic3)
 
 
 # Part 3: Split data 
@@ -42,16 +42,25 @@ set.seed(1)
 # split the data in half
 
 # indices 
-train_index <- sample(nrow(titanic3), nrow(titanic3)/2)
+train_index <- sample(nrow(titanic.clean), nrow(titanic.clean)/2)
 
 # assign data
-train <- titanic3[train_index, ]
-test <- titanic3[-train_index, ]
+train <- titanic.clean[train_index, ]
+test <- titanic.clean[-train_index, ]
 
 # target variable from text set 
-actual <- titanic3[-train_index, "survived01"]
+actual <- titanic.clean[-train_index, "survived"]
 
-actual
+actual01 <- titanic.clean[-train_index, "survived01"]
 
 
 
+# Part 4: Build random forest model 
+
+rf.titanic <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
+
+# get predictions
+prediction <- predict(rf.titanic, newdata = test)
+
+# confusion matrix for test error
+mean((prediction - actual) ^ 2)
