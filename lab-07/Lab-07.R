@@ -16,6 +16,7 @@ titanic3=select(titanic3, -name, -ticket, -boat, -body, -home.dest, -cabin) ti%>
 
 summary(titanic3)
 
+
 # Part 1: Feature Transformation
 
 # Convert numerical variable to catagorical 
@@ -23,3 +24,13 @@ summary(titanic3)
 titanic3$survived01 = as.factor(titanic3$survived)
 
 append(titanic3$survived01, titanic3)
+
+
+# Part 2: Build a forest
+
+# install package
+library(randomForest)
+
+# remove rows with missing data
+na.omit(titanic3)
+
