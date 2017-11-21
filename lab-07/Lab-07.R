@@ -76,9 +76,6 @@ rf.titanic01 <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,im
 # get predictions
 prediction01 <- predict(rf.titanic01, newdata = test)
 
-# confusion matrix for test error
-mean((prediction01 - actual01) ^ 2)
-
 # stats
 rf.titanic01
 
@@ -105,3 +102,49 @@ importance(rf.titanic01)
 varImpPlot(rf.titanic01)
 
 # Similar
+
+
+# Part 7: Comparison of Error Rates
+
+# The black line (madjority vote)
+
+# vector for test error
+error.mv = rep(0,200)
+
+for (i in 1:200){
+ 
+  # new classification model
+  rf.titanicC <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
+  
+  # get predictions
+  predictionC <- predict(rf.titanicC, newdata = test)
+  
+  error.mv[i] <- mean(rf.titanicC$err.rate)
+}
+
+
+# blue line 
+
+# vector for test error
+error.ave = rep(0,200)
+
+for (i in 1:200){
+  
+  # new classification model
+  rf.titanicR <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
+  
+  # get predictions
+  predictionR <- predict(rf.titanicR, newdata = test)
+  
+  error.ave[i] <- mean((prediction - actual) ^ 2)
+}
+
+# black line
+plot(error.mv, xlab="Number of Data sets", ylab="Test Error Rate ", type="l"
+     , ylim= c(0.2, 0.3))
+
+#blue line
+lines(error.ave, col="blue")
+
+# add red line
+abline(h=error.mv[1],lty=2,col="red")
