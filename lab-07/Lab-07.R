@@ -87,3 +87,21 @@ rf.titanic01$ntree
 
 # error
 mean(rf.titanic01$err.rate)
+
+
+# Part 6: Variable Importance Plot
+
+# Regression Model
+
+importance(rf.titanic)
+
+varImpPlot(rf.titanic)
+
+
+# Classification Model
+
+importance(rf.titanic01)
+
+varImpPlot(rf.titanic01)
+
+# Similar
