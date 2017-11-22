@@ -168,3 +168,33 @@ for (i in 1:length(error.preds)){
 
 
 plot(error.preds, type="b", xlab="mtry", ylab="Test MSE")
+
+
+# Part 9: Errors vs ntrees 
+
+plot(0,ylab="Test Error", xlab="Number of Trees", ylim = c(0.1,0.25), xlim= c(0,500), main="Random Forest")
+
+# Matrix instead of dataframe
+errors.trees <- matrix(nrow=7, ncol=500 )
+
+
+for (i in 1:7){
+
+  
+  for (j in 1:500) {
+
+    rf.titanicLoop <- randomForest(survived ~ . -survived01, data = train, mtry = i,ntree = j ,importance=TRUE)    
+    
+    predictionLoop <- predict(rf.titanicLoop, newdata = test)
+    
+    errors.trees[i, j] <- mean((predictionLoop - actual) ^ 2)
+    
+    lines(errors.trees[i,],col=i)
+    
+  }
+  
+ 
+}
+
+legend(title="mtry","topright",c("1","2","3","4","5","6","7"),lty=rep(1,7),col=1:7)
+
