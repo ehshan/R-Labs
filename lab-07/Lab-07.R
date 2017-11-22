@@ -194,7 +194,7 @@ plot(error.preds, type="b", xlab="mtry", ylab="Test MSE")
 
 # Part 9: Errors vs ntrees 
 
-plot(0,ylab="Test Error", xlab="Number of Trees", ylim = c(0.1,0.25), xlim= c(0,500), main="Random Forest")
+plot(0,ylab="Test Error", xlab="Number of Trees", main="Random Forest", xlim=c(1,540), ylim =c(0.17,0.25))
 
 # Matrix instead of dataframe
 errors.trees <- matrix(nrow=7, ncol=500 )
@@ -211,7 +211,7 @@ for (i in 1:7){
     
     predictionLoop <- predict(rf.titanicLoop, newdata = test, type="class")
     
-    errors.trees[i, j] <- mean(predictionLoop!= actual)
+    errors.trees[i, j] <- mean(predictionLoop!= actual01)
     
     
   }
