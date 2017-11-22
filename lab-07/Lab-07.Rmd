@@ -1,0 +1,259 @@
+---
+title: "Lab-07"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Random Forests 
+
+First will will need to load the dplyr library, so we can read in csv files. 
+```{r}
+library(dplyr)
+
+titanic3 = read.csv("..\\..\\Week08\\titanic3.cSV", header = TRUE)
+```
+
+Once the data has been load, We can remove features from the dataset that will not be require for our tree models.
+```{r}
+titanic3=select(titanic3, -name, -ticket, -boat, -body, -home.dest, -cabin) %>% mutate(embarked = factor(embarked),sex = factor(sex), pclass=factor(embarked))
+
+summary(titanic3)
+```
+
+
+
+## Part 1: Feature Transformation
+
+We will first need to clean and transform the data so it is optimised for our model. We will initially add a new variable survived01, which is a categorical equivalent of survived. 
+```{r}
+titanic3$survived01 = as.factor(titanic3$survived)
+
+append(titanic3$survived01, titanic3)
+```
+
+## Part 2: Build a forest
+
+To use the random forest model, we will need to load the relevant library.
+```{r}
+# install package
+library(randomForest)
+```
+
+Random forest can use only complete records. We will removed any observation that does not have values for all the predictor and target variables. 
+```{r}
+# remove rows with missing data
+titanic.clean <- na.omit(titanic3)
+```
+
+## Part 3: Split the data
+
+We can now split the data into training and test sets. 
+```{r}
+set.seed(1)
+
+# split the data in half
+
+# indices 
+train_index <- sample(nrow(titanic.clean), nrow(titanic.clean)/2)
+
+# assign data
+train <- titanic.clean[train_index, ]
+test <- titanic.clean[-train_index, ]
+```
+
+We can also assign a couple of new variables, which will be the expected result from the test set. These can be used to construct the confusion matrix. 
+```{r}
+# target variable from text set 
+actual <- titanic.clean[-train_index, "survived"]
+
+actual01 <- titanic.clean[-train_index, "survived01"]
+```
+
+## Part 4: Build random forest model with numeric target variable
+
+We will now build a regression random forest model with survived as the target. We will use all other variables, except survided01, as predictors.
+```{r}
+rf.titanic <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
+```
+
+We can now used the model to predict probabilities. 
+```{r}
+prediction <- predict(rf.titanic, newdata = test)
+```
+
+We can compare the predicted and actual results to compute the test error.
+```{r}
+# confusion matrix for test error
+mean((prediction - actual) ^ 2)
+```
+
+Additionally we can get some stats on the model. 
+```{r}
+# stats
+rf.titanic
+```
+
+## Part 5: Part 5: Random forest model with categorical variable as target
+
+Now We will now build a classification random forest. We will use survided01 as the target, and all other variables, with the execption of survived, being used as predictors.
+
+```{r}
+rf.titanic01 <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
+```
+
+We can now used the model to predict probabilities, with the test dataset. 
+```{r}
+prediction01 <- predict(rf.titanic01, newdata = test)
+```
+
+We can also get model statistics, directly from the model as it is a classification model.
+```{r}
+# stats
+rf.titanic01
+
+# number of tree
+rf.titanic01$ntree
+
+# error
+mean(rf.titanic01$err.rate)
+```
+
+## Part 6: Variable Importance Plot
+
+We can analysis and plot the importance of each predictor variable in a random forest. For the regression model:
+```{r}
+# Regression Model
+
+importance(rf.titanic)
+
+varImpPlot(rf.titanic)
+```
+
+For the classification model:
+```{r}
+# Classification Model
+
+importance(rf.titanic01)
+
+varImpPlot(rf.titanic01)
+```
+
+
+## Part 7: Comparison of Error Rates 
+
+We can compare the error rate from different modelling approaches. For this comparison, we will use a forest comprising of 200 tree.The first will use a majority vote from all the tree in the forest to decided a classification.  
+```{r}
+# The black line (madjority vote)
+
+# vector for test error
+error.mv = rep(0,200)
+
+for (i in 1:200){
+ 
+  # new classification model
+  rf.titanicC <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
+  
+  # get predictions
+  predictionC <- predict(rf.titanicC, newdata = test)
+  
+  error.mv[i] <- mean(rf.titanicC$err.rate)
+}
+```
+
+The second approach uses averages probabilities from each tree and predicts the class with the highest value.
+```{r}
+# blue line 
+
+# vector for test error
+error.ave = rep(0,200)
+
+for (i in 1:200){
+  
+  # new classification model
+  rf.titanicR <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
+  
+  # get predictions
+  predictionR <- predict(rf.titanicR, newdata = test)
+  
+  error.ave[i] <- mean((predictionR - actual) ^ 2)
+}
+```
+
+We can now plot all both of the results against the error from a single tree.
+```{r}
+# black line
+plot(error.mv, xlab="Number of Data sets", ylab="Test Error Rate ", type="l"
+     , ylim= c(0.2, 0.3))
+
+#blue line
+lines(error.ave, col="blue")
+
+# add red line
+abline(h=error.mv[1],lty=2,col="red")
+```
+
+
+
+## Part 8: Experiments with number of predictors at tree splits
+
+We can now experiment with different values for mtry, to try and reduce the error. 
+```{r}
+error.preds <- rep(0,7)
+```
+
+We will build 7 different forests, each with a different number of possible splits (1-7) at each branch. 
+```{r}
+for (i in 1:length(error.preds)){
+  
+  rf.titanicM <- randomForest(survived ~ . -survived01, data = train, mtry = i,importance=TRUE)
+  
+  predictionM <- predict(rf.titanicM, newdata = test)
+  
+  error.preds[i] <- mean((predictionM - actual) ^ 2)
+  
+}
+```
+
+We can plot the results.
+```{r}
+plot(error.preds, type="b", xlab="mtry", ylab="Test MSE")
+```
+
+
+## Part 9: Errors vs ntrees 
+
+We will now experiment by altering the number of tree in each forest, and compare these with different values for mtry. We can visualise the results with a plot.
+```{r}
+plot(0,ylab="Test Error", xlab="Number of Trees", ylim = c(0.1,0.25), xlim= c(0,500), main="Random Forest")
+```
+
+```{r}
+errors.trees <- matrix(nrow=7, ncol=500 )
+```
+
+```{r}
+for (i in 1:7){
+
+  for (j in 1:500) {
+
+    rf.titanicLoop <- randomForest(survived ~ . -survived01, data = train, mtry = i,ntree = j ,importance=TRUE)    
+    
+    predictionLoop <- predict(rf.titanicLoop, newdata = test)
+    
+    errors.trees[i, j] <- mean((predictionLoop - actual) ^ 2)
+    
+    lines(errors.trees[i,],col=i)
+    
+  }
+}
+```
+
+```{r}
+legend(title="mtry","topright",c("1","2","3","4","5","6","7"),lty=rep(1,7),col=1:7)
+```
