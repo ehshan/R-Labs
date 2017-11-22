@@ -79,6 +79,8 @@ actual01 <- titanic.clean[-train_index, "survived01"]
 
 We will now build a regression random forest model with survived as the target. We will use all other variables, except survided01, as predictors.
 ```{r}
+set.seed(1)
+
 rf.titanic <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
 ```
 
@@ -87,10 +89,14 @@ We can now used the model to predict probabilities.
 prediction <- predict(rf.titanic, newdata = test)
 ```
 
-We can compare the predicted and actual results to compute the test error.
+We can compare the predicted and actual results to compute the test error. First we will convert the probabilities to classes.
 ```{r}
-# confusion matrix for test error
-mean((prediction - actual) ^ 2)
+titanic.class = ifelse(prediction <= 0.5, "0", "1")
+```
+
+Now we can compare the results.
+```{r}
+mean(titanic.class != actual)
 ```
 
 Additionally we can get some stats on the model. 
@@ -107,10 +113,16 @@ Now We will now build a classification random forest. We will use survided01 as 
 rf.titanic01 <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
 ```
 
-We can now used the model to predict probabilities, with the test dataset. 
+We can now used the model to predict probabilities, with the test dataset. We can assign the prediction to classes, instead of raw probabilities. 
 ```{r}
-prediction01 <- predict(rf.titanic01, newdata = test)
+prediction01 <- predict(rf.titanic01, newdata = test, type="class")
 ```
+
+Now we can compare the results.
+```{r}
+mean(prediction01 != actual01)
+```
+
 
 We can also get model statistics, directly from the model as it is a classification model.
 ```{r}
@@ -149,20 +161,22 @@ varImpPlot(rf.titanic01)
 
 We can compare the error rate from different modelling approaches. For this comparison, we will use a forest comprising of 200 tree.The first will use a majority vote from all the tree in the forest to decided a classification.  
 ```{r}
-# The black line (madjority vote)
+# The black line (majority vote)
 
 # vector for test error
 error.mv = rep(0,200)
 
 for (i in 1:200){
+  
+  set.seed(1)
  
   # new classification model
-  rf.titanicC <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
+  rf.titanicC <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE, ntree = i)
   
   # get predictions
-  predictionC <- predict(rf.titanicC, newdata = test)
+  predictionC <- predict(rf.titanicC, newdata = test, type = "class")
   
-  error.mv[i] <- mean(rf.titanicC$err.rate)
+  error.mv[i] <- mean(predictionC != actual01)
 }
 ```
 
@@ -173,15 +187,19 @@ The second approach uses averages probabilities from each tree and predicts the 
 # vector for test error
 error.ave = rep(0,200)
 
-for (i in 1:200){
+for (j in 1:200){
   
+  
+  set.seed(1)
   # new classification model
-  rf.titanicR <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
+  rf.titanicR <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE, ntree = j)
   
   # get predictions
   predictionR <- predict(rf.titanicR, newdata = test)
   
-  error.ave[i] <- mean((predictionR - actual) ^ 2)
+  predctionR.class = ifelse(predictionR<=0.5, "0", "1")
+  
+  error.ave[j] <- mean(predctionR.class != actual)  
 }
 ```
 
@@ -211,11 +229,11 @@ We will build 7 different forests, each with a different number of possible spli
 ```{r}
 for (i in 1:length(error.preds)){
   
-  rf.titanicM <- randomForest(survived ~ . -survived01, data = train, mtry = i,importance=TRUE)
+  rf.titanicM <- randomForest(survived01 ~ . -survived, data = train, mtry = i,importance=TRUE)
   
-  predictionM <- predict(rf.titanicM, newdata = test)
+  predictionM <- predict(rf.titanicM, newdata = test, type="class")
   
-  error.preds[i] <- mean((predictionM - actual) ^ 2)
+  error.preds[i] <- mean(predictionM != actual01)
   
 }
 ```
@@ -240,17 +258,21 @@ errors.trees <- matrix(nrow=7, ncol=500 )
 ```{r}
 for (i in 1:7){
 
+  
   for (j in 1:500) {
+    
+    set.seed(1)
 
-    rf.titanicLoop <- randomForest(survived ~ . -survived01, data = train, mtry = i,ntree = j ,importance=TRUE)    
+    rf.titanicLoop <- randomForest(survived01 ~ . -survived, data = train, mtry = i,ntree = j ,importance=TRUE)    
     
-    predictionLoop <- predict(rf.titanicLoop, newdata = test)
+    predictionLoop <- predict(rf.titanicLoop, newdata = test, type="class")
     
-    errors.trees[i, j] <- mean((predictionLoop - actual) ^ 2)
-    
-    lines(errors.trees[i,],col=i)
+    errors.trees[i, j] <- mean(predictionLoop!= actual)
     
   }
+  
+  lines(errors.trees[i, ],col=i,type="l")
+ 
 }
 ```
 

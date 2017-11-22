@@ -57,13 +57,22 @@ actual01 <- titanic.clean[-train_index, "survived01"]
 
 # Part 4: Build random forest model with continous target variable
 
+set.seed(1)
+
 rf.titanic <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
 
 # get predictions
 prediction <- predict(rf.titanic, newdata = test)
 
+
+# Assign classes
+titanic.class = ifelse(prediction <= 0.5, "0", "1")
+
+# error
+mean(titanic.class != actual)
+
 # confusion matrix for test error
-mean((prediction - actual) ^ 2)
+#mean((prediction - actual) ^ 2)
 
 # stats
 rf.titanic
@@ -71,10 +80,12 @@ rf.titanic
 
 # Part 5: Random forest model with catgorial variable as target
 
+set.seed(1)
+
 rf.titanic01 <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
 
 # get predictions
-prediction01 <- predict(rf.titanic01, newdata = test)
+prediction01 <- predict(rf.titanic01, newdata = test, type="class")
 
 # stats
 rf.titanic01
@@ -83,7 +94,10 @@ rf.titanic01
 rf.titanic01$ntree
 
 # error
-mean(rf.titanic01$err.rate)
+#mean(rf.titanic01$err.rate)
+
+#errors
+mean(prediction01 != actual01)
 
 
 # Part 6: Variable Importance Plot
@@ -112,14 +126,16 @@ varImpPlot(rf.titanic01)
 error.mv = rep(0,200)
 
 for (i in 1:200){
+  
+  set.seed(1)
  
   # new classification model
-  rf.titanicC <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE)
+  rf.titanicC <- randomForest(survived01 ~ . -survived, data = train, mtry = 7,importance=TRUE, ntree = i)
   
   # get predictions
-  predictionC <- predict(rf.titanicC, newdata = test)
+  predictionC <- predict(rf.titanicC, newdata = test, type = "class")
   
-  error.mv[i] <- mean(rf.titanicC$err.rate)
+  error.mv[i] <- mean(predictionC != actual01)
 }
 
 
@@ -128,21 +144,27 @@ for (i in 1:200){
 # vector for test error
 error.ave = rep(0,200)
 
-for (i in 1:200){
+for (j in 1:200){
   
+  
+  set.seed(1)
   # new classification model
-  rf.titanicR <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE)
+  rf.titanicR <- randomForest(survived ~ . -survived01, data = train, mtry = 7,importance=TRUE, ntree = j)
   
   # get predictions
   predictionR <- predict(rf.titanicR, newdata = test)
   
-  error.ave[i] <- mean((predictionR - actual) ^ 2)
+  predctionR.class = ifelse(predictionR<=0.5, "0", "1")
+  
+  error.ave[j] <- mean(predctionR.class != actual)  
+  
+  #error.ave[i] <- mean((predictionR - actual) ^ 2)
 }
 
 
 # black line
 plot(error.mv, xlab="Number of Data sets", ylab="Test Error Rate ", type="l"
-     , ylim= c(0.2, 0.3))
+     )
 
 #blue line
 lines(error.ave, col="blue")
@@ -158,11 +180,11 @@ error.preds <- rep(0,7)
 
 for (i in 1:length(error.preds)){
   
-  rf.titanicM <- randomForest(survived ~ . -survived01, data = train, mtry = i,importance=TRUE)
+  rf.titanicM <- randomForest(survived01 ~ . -survived, data = train, mtry = i,importance=TRUE)
   
-  predictionM <- predict(rf.titanicM, newdata = test)
+  predictionM <- predict(rf.titanicM, newdata = test, type="class")
   
-  error.preds[i] <- mean((predictionM - actual) ^ 2)
+  error.preds[i] <- mean(predictionM != actual01)
   
 }
 
@@ -182,17 +204,19 @@ for (i in 1:7){
 
   
   for (j in 1:500) {
+    
+    set.seed(1)
 
-    rf.titanicLoop <- randomForest(survived ~ . -survived01, data = train, mtry = i,ntree = j ,importance=TRUE)    
+    rf.titanicLoop <- randomForest(survived01 ~ . -survived, data = train, mtry = i,ntree = j ,importance=TRUE)    
     
-    predictionLoop <- predict(rf.titanicLoop, newdata = test)
+    predictionLoop <- predict(rf.titanicLoop, newdata = test, type="class")
     
-    errors.trees[i, j] <- mean((predictionLoop - actual) ^ 2)
+    errors.trees[i, j] <- mean(predictionLoop!= actual)
     
-    lines(errors.trees[i,],col=i)
     
   }
   
+  lines(errors.trees[i, ],col=i,type="l")
  
 }
 
