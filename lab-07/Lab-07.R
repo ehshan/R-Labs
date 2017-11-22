@@ -12,7 +12,7 @@ titanic3 = read.csv("..\\Week08\\titanic3.cSV", header = TRUE)
 
 titanic3
 
-titanic3=select(titanic3, -name, -ticket, -boat, -body, -home.dest, -cabin) ti%>% mutate(embarked = factor(embarked),sex = factor(sex), pclass=factor(embarked))
+titanic3=select(titanic3, -name, -ticket, -boat, -body, -home.dest, -cabin) %>% mutate(embarked = factor(embarked),sex = factor(sex), pclass=factor(embarked))
 
 summary(titanic3)
 
@@ -136,8 +136,9 @@ for (i in 1:200){
   # get predictions
   predictionR <- predict(rf.titanicR, newdata = test)
   
-  error.ave[i] <- mean((prediction - actual) ^ 2)
+  error.ave[i] <- mean((predictionR - actual) ^ 2)
 }
+
 
 # black line
 plot(error.mv, xlab="Number of Data sets", ylab="Test Error Rate ", type="l"
@@ -148,3 +149,22 @@ lines(error.ave, col="blue")
 
 # add red line
 abline(h=error.mv[1],lty=2,col="red")
+
+
+# Part 8: Experiments with number of predictors at tree splits 
+
+# vector for mtry vaulues 
+error.preds <- rep(0,7)
+
+for (i in 1:length(error.preds)){
+  
+  rf.titanicM <- randomForest(survived ~ . -survived01, data = train, mtry = i,importance=TRUE)
+  
+  predictionM <- predict(rf.titanicM, newdata = test)
+  
+  error.preds[i] <- mean((predictionM - actual) ^ 2)
+  
+}
+
+
+plot(error.preds, type="b", xlab="mtry", ylab="Test MSE")
