@@ -56,6 +56,9 @@ linear_fit_1 = svm(y~.,data = training_set, kernel = "linear",cost = 1)
 
 # Part 3: Report Results
 
+summary(linear_fit_1)
+
+# The results shows that there are 12 spoort vetors
 
 # Part 4: Linear SVM Plot
 
