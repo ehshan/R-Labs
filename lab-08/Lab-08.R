@@ -40,7 +40,8 @@ train_indices <- sample(200, 200 * 0.7)
 training_set <- data[train_indices, ]
 
 test_obs <- obs[-train_indices, ]
-test_lables <- labels[-train_indices]
+test_labels <- labels[-train_indices]
+
 
 
 # Part 1: Load SVM Library
@@ -72,7 +73,13 @@ plot(linear_fit_1, training_set)
 
 
 
-# Part 5: Prediction on Linear Model
+# Part 5: Predictions on Linear Model
+
+# predictions
+prediction_linear_1 = predict(linear_fit_1, newdata = test_obs)
+
+# error calculation
+mean(prediction_linear_1 != test_labels)
 
 
 # Part 6: Linear Models with cost 0.01 & 0.00001
