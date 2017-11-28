@@ -108,6 +108,31 @@ mean(prediction_linear_001 != test_labels)
 # same error rate
 
 
+# b: cost = 1e5
+
+# build model
+linear_fit_1e5 = svm(y~.,data = training_set, kernel = "linear",cost = 1e5)
+
+# summary 
+summary(linear_fit_1e5)
+
+# 8 support vectors
+
+# plot
+plot(linear_fit_1e5, training_set)
+
+# Only 2 points close to boundary on pink side
+
+# predictions
+prediction_linear_1e5 = predict(linear_fit_1e5, newdata = test_obs)
+
+# error calculation
+mean(prediction_linear_1e5 != test_labels)
+
+# same error 
+
+
+
 # Part 7: Find Optimal Model
 
 
