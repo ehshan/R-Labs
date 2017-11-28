@@ -52,6 +52,7 @@ library(e1071)
 
 # Part 2: Linear SVM with cost = 1
 
+linear_fit_1 = svm(y~.,data = training_set, kernel = "linear",cost = 1)
 
 # Part 3: Report Results
 
