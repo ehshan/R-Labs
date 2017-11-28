@@ -40,10 +40,14 @@ train_indices <- sample(200, 200 * 0.7)
 training_set <- data[train_indices, ]
 
 test_obs <- obs[-train_indices, ]
-test_lables <- labels[-train, ]
+test_lables <- labels[-train_indices]
 
 
 # Part 1: Load SVM Library
+
+#install.packages("e1071")
+library(e1071)
+
 
 
 # Part 2: Linear SVM with cost = 1
