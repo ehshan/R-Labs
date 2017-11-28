@@ -82,7 +82,7 @@ prediction_linear_1 = predict(linear_fit_1, newdata = test_obs)
 mean(prediction_linear_1 != test_labels)
 
 
-# Part 6: Linear Models with cost 0.01 & 0.00001
+# Part 6: Linear Models with cost 0.01 & 100000
 
 # a: cost = 0.01
 
@@ -135,4 +135,14 @@ mean(prediction_linear_1e5 != test_labels)
 
 # Part 7: Find Optimal Model
 
+set.seed(1)
 
+# range of cost values
+costs <- c(0.001,0.01,0.1,1,5,10,100,1000,10000,1e5)
+
+tuned_fit = tune(svm, y~., data = data ,kernel="linear",ranges=list(costs))
+
+
+summary(tuned_fit)
+
+# the optimal cost parameter is 0.001
