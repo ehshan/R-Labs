@@ -84,6 +84,29 @@ mean(prediction_linear_1 != test_labels)
 
 # Part 6: Linear Models with cost 0.01 & 0.00001
 
+# a: cost = 0.01
+
+# build model
+linear_fit_001 = svm(y~.,data = training_set, kernel = "linear",cost = 0.01)
+
+# summary 
+summary(linear_fit_001)
+
+# 92 support vectors
+
+# plot
+plot(linear_fit_001, training_set)
+
+# similar boundray
+
+# predictions
+prediction_linear_001 = predict(linear_fit_001, newdata = test_obs)
+
+# error calculation
+mean(prediction_linear_001 != test_labels)
+
+# same error rate
+
 
 # Part 7: Find Optimal Model
 
