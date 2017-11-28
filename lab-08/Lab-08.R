@@ -54,13 +54,22 @@ library(e1071)
 
 linear_fit_1 = svm(y~.,data = training_set, kernel = "linear",cost = 1)
 
+
+
 # Part 3: Report Results
 
 summary(linear_fit_1)
 
 # The results shows that there are 12 spoort vetors
 
+
+
 # Part 4: Linear SVM Plot
+
+plot(linear_fit_1, training_set)
+
+# The results show that there are 3 points close to the margin, 1 on the pink side, 2 on the blue
+
 
 
 # Part 5: Prediction on Linear Model
