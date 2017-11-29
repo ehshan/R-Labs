@@ -263,3 +263,12 @@ summary(tuned_radial)
 # Best value for cost is 0.1
 
 # Best value for gamma is 0.5
+
+
+# Part 11: Test error on optimal model
+
+prediction_optimal_radial = predict(tuned_radial$best.model, newdata = new_test_obs)
+rrr
+mean(prediction_optimal_radial != new_test_labels)
+
+# Error of 0.5
