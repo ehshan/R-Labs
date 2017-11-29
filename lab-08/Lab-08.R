@@ -248,7 +248,7 @@ mean(prediction_non_linear_1e5 != new_test_labels)
 # error of  0.4833333 - slight inprovement
 
 
-# Part 10: Final optimal values for cost and gamma 
+# Part 10: Optimal values for cost and gamma 
 
 set.seed(1)
 
