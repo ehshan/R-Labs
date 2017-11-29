@@ -246,3 +246,20 @@ prediction_non_linear_1e5 = predict(non_linear_fit_1e5, newdata = new_test_obs)
 mean(prediction_non_linear_1e5 != new_test_labels)
 
 # error of  0.4833333 - slight inprovement
+
+
+# Part 10: Final optimal values for cost and gamma 
+
+set.seed(1)
+
+costs <- c(0.001,0.01,0.1,1,5,10,100,1000,10000,1e5)
+
+gammas <- c(0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4)
+
+tuned_radial <- tune(svm,y~.,data = new_training_set, kernel = "radial",ranges = list(cost = costs, gamma = gammas))
+
+summary(tuned_radial)
+
+# Best value for cost is 0.1
+
+# Best value for gamma is 0.5
