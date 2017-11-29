@@ -189,3 +189,27 @@ new_training_set <- new_data[new_train_indices, ]
 new_test_obs <- obs[-new_train_indices, ]
 new_test_labels <- labels[-new_train_indices]
 
+
+# Part 8: SVM model with a radial kernel, gamma =1 and cost = 1.
+
+
+non_linear_fit_1 = svm(y~.,data = new_training_set, kernel = "radial",gamma = 1, cost = 1)
+
+# a: Summary
+
+summary(non_linear_fit_1)
+
+
+# b: Plot 
+
+plot(non_linear_fit_1, new_training_set)
+
+
+# C: Test error
+
+# predictions
+prediction_non_linear_1 = predict(non_linear_fit_1, newdata = new_test_obs)
+
+# error calculation
+mean(prediction_non_linear_1 != new_test_labels)
+
