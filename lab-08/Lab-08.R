@@ -146,3 +146,32 @@ tuned_fit = tune(svm, y~., data = data ,kernel="linear",ranges=list(costs))
 summary(tuned_fit)
 
 # the optimal cost parameter is 0.001
+
+
+
+# Generate Linear inseparable dataset
+
+
+# Set seed
+set.seed(300)
+
+# half and half with different means
+positive_1 <- matrix(rnorm((data_points/2), mean = pos_mean), nrow = 50, ncol = 2)
+positive_2 <- matrix(rnorm((data_points/2), mean = neg_mean), nrow = 50, ncol = 2)
+
+set.seed(300)
+negative_1 = matrix(c(rnorm((data_points/2), mean = neg_mean) + 3, ), nrow = 50, ncol = 2)
+negative_2 = matrix(c(rnorm((data_points/2), mean = pos_mean) - 3, ), nrow = 50, ncol = 2)
+
+
+x.neg1=matrix(c(rnorm(30,mean=0)+3,rnorm(30,mean=0)),nrow=30,ncol=2)
+x.neg2=matrix(c(rnorm(30,mean=3)-3,rnorm(30,mean=3)),nrow=30,ncol=2)
+
+new_labels <- c(rep(1, 100), rep(-1, 100))
+
+new_obs <- rbind(positive_1, positive_2, negative_1, negative_2)
+
+new_data <- data.frame(x = new_obs, y = as.factor(new_labels))
+
+plot(new_obs, col=ifelse(new_labels > 0, 1, 2))
+legend("topleft",c("Positive","Negative"),col=seq(2),pch=1,text.col=seq(2))
