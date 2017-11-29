@@ -268,7 +268,7 @@ summary(tuned_radial)
 # Part 11: Test error on optimal model
 
 prediction_optimal_radial = predict(tuned_radial$best.model, newdata = new_test_obs)
-rrr
+
 mean(prediction_optimal_radial != new_test_labels)
 
 # Error of 0.5
