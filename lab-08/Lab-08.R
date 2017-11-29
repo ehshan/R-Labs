@@ -160,12 +160,12 @@ positive_1 <- matrix(rnorm((data_points/2), mean = pos_mean), nrow = 50, ncol = 
 positive_2 <- matrix(rnorm((data_points/2), mean = neg_mean), nrow = 50, ncol = 2)
 
 set.seed(300)
-negative_1 = matrix(c(rnorm((data_points/2), mean = neg_mean) + 3, ), nrow = 50, ncol = 2)
-negative_2 = matrix(c(rnorm((data_points/2), mean = pos_mean) - 3, ), nrow = 50, ncol = 2)
+#negative_1 = matrix(c(rnorm((data_points/2), mean = neg_mean) + 2, ), nrow = 50, ncol = 2)
+#negative_2 = matrix(c(rnorm((data_points/2), mean = pos_mean) - 2, ), nrow = 50, ncol = 2)
 
 
-x.neg1=matrix(c(rnorm(30,mean=0)+3,rnorm(30,mean=0)),nrow=30,ncol=2)
-x.neg2=matrix(c(rnorm(30,mean=3)-3,rnorm(30,mean=3)),nrow=30,ncol=2)
+negative_1 = matrix(c(rnorm((data_points/2),mean = neg_mean) + 3,rnorm((data_points/2),mean = neg_mean)),nrow = 50,ncol = 2)
+negative_2 = matrix(c(rnorm((data_points/2),mean = pos_mean) - 3,rnorm((data_points/2),mean = pos_mean)),nrow = 50,ncol = 2)
 
 new_labels <- c(rep(1, 100), rep(-1, 100))
 
@@ -175,3 +175,17 @@ new_data <- data.frame(x = new_obs, y = as.factor(new_labels))
 
 plot(new_obs, col=ifelse(new_labels > 0, 1, 2))
 legend("topleft",c("Positive","Negative"),col=seq(2),pch=1,text.col=seq(2))
+
+
+
+# Split data into training & test sets (all variables have 'new' prefix)
+
+set.seed(300)
+
+new_train_indices <- sample(200, 200 * 0.7)
+
+new_training_set <- new_data[new_train_indices, ]
+
+new_test_obs <- obs[-new_train_indices, ]
+new_test_labels <- labels[-new_train_indices]
+
