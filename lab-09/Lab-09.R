@@ -114,6 +114,7 @@ D
 DFcor =  1 - cor(t(DF)) 
 DFcor
 
+
 # Part 3: Calcualte the different models by linkage 
 
 # a: Complete
@@ -132,3 +133,19 @@ single_fit <- hclust(D, method = "single")
 # d: Centroid
 
 centroid_fit <- hclust(D, method = "centroid")
+
+
+# Part 4: Plot models
+
+# split the plot space
+par(mfrow=c(2,2))
+
+# Plot models 
+
+plot(complete_fit, main = "Complete Linkage",cex = 0.9)
+
+plot(average_fit, main = "Average Linkage",cex = 0.9)
+
+plot(single_fit, main = "Single Linkage",cex = 0.9)
+
+plot(centroid_fit, main = "Centroid Linkage",cex = 0.9)
