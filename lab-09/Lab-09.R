@@ -38,3 +38,21 @@ dat_k2_1$tot.withinss
 # Part 4: Plot the Clustering results
 
 plot(dat, col =(dat_k2_1$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
+
+
+
+# Part 5: Perform k-means with 2 clusters, and 100 starting points
+
+set.seed(1)
+
+dat_k2_100 <- kmeans(dat,2, nstart = 100)
+
+dat_k2_100$cluster
+
+dat_k2_100$tot.withinss
+
+# Same value for total sum of squares
+
+plot(dat, col =(dat_k2_100$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
+
+# Same resulting clusters
