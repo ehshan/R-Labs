@@ -103,3 +103,13 @@ DF <- read.csv("..\\week10\\Ch10Ex11.csv", header = FALSE)
 # Part 1: Transposed dataset
 
 DF <- t(DF)
+
+
+# Part 2: Calculate the dissimilarity metric
+
+# cor computes the correlation of *columns* so we need to take the transpose of DF
+D = as.dist( 1 - cor(t(DF)))
+D
+
+DFcor =  1 - cor(t(DF)) 
+DFcor
