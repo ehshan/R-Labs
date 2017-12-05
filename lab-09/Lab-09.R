@@ -56,3 +56,17 @@ dat_k2_100$tot.withinss
 plot(dat, col =(dat_k2_100$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
 
 # Same resulting clusters
+
+
+# Part 6: Find best K value
+
+# initialise vector to hold results
+totWithinSS = rep(0,15)
+
+# capture total sum of squares for all k values 1-15
+for(i in 1:15){
+  set.seed(1)
+  totWithinSS[i] = kmeans(dat,i,nstart = 100)$tot.withinss
+}
+
+
