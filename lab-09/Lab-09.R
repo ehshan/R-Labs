@@ -37,7 +37,7 @@ dat_k2_1$tot.withinss
 
 # Part 4: Plot the Clustering results
 
-plot(dat, col =(dat_k2_1$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
+plot(dat, col = (dat_k2_1$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
 
 
 
@@ -53,7 +53,7 @@ dat_k2_100$tot.withinss
 
 # Same value for total sum of squares
 
-plot(dat, col =(dat_k2_100$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
+plot(dat, col = (dat_k2_100$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
 
 # Same resulting clusters
 
@@ -61,7 +61,7 @@ plot(dat, col =(dat_k2_100$cluster +1) , main = "K-Means result with 2 clusters"
 # Part 6: Find best K value
 
 # initialise vector to hold results
-totWithinSS = rep(0,15)
+totWithinSS <- rep(0,15)
 
 # capture total sum of squares for all k values 1-15
 for(i in 1:15){
@@ -86,16 +86,20 @@ plot(1:15, totWithinSS, type = "b", xlab="Number of Clusters",
 
 set.seed(1)
 
-dat_k6_100 = kmeans(dat,6,nstart = 100)
+dat_k6_100 <- kmeans(dat,6,nstart = 100)
 
-plot(dat, col =(dat_k6_100$cluster +1) , main = "K-Means result with 6 clusters", pch = 20, cex = 2)
+plot(dat, col = (dat_k6_100$cluster +1) , main = "K-Means result with 6 clusters", pch = 20, cex = 2)
+
+
 
 
 # Hierarchical Clustering
 
 # Load dataset
 
-DF = read.csv("..\\week10\\Ch10Ex11.csv", header = FALSE)
+DF <- read.csv("..\\week10\\Ch10Ex11.csv", header = FALSE)
 
 
+# Part 1: Transposed dataset
 
+DF <- t(DF)
