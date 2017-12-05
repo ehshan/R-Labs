@@ -19,3 +19,11 @@ dat = attitude[,c(3,4)]
 
 plot(dat, main = "% of favourable responses to Learning and Privilege", pch = 20, cex = 2)
 
+
+# Part 2: Perform k-means with 2 clusters
+
+set.seed(1)
+
+dat_k2 = kmeans(dat,2, nstart = 100)
+
+dat_k2$tot.withinss
