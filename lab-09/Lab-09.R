@@ -20,10 +20,15 @@ dat = attitude[,c(3,4)]
 plot(dat, main = "% of favourable responses to Learning and Privilege", pch = 20, cex = 2)
 
 
-# Part 2: Perform k-means with 2 clusters
+# Part 2: Perform k-means with 2 clusters, and 100 starting points
 
 set.seed(1)
 
-dat_k2 = kmeans(dat,2, nstart = 100)
+dat_k2 <- kmeans(dat,2, nstart = 100)
+
+dat_k2$cluster
+
+
+# Part 3: Calcualte the total within clusters sum of squares (SOS for all clusters)
 
 dat_k2$tot.withinss
