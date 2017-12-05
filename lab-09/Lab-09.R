@@ -69,6 +69,7 @@ for(i in 1:15){
   totWithinSS[i] = kmeans(dat,i,nstart = 100)$tot.withinss
 }
 
+totWithinSS
 
 # Part 7: Plot results and find optimal value
 
@@ -76,3 +77,5 @@ plot(1:15, totWithinSS, type = "b", xlab="Number of Clusters",
      ylab = "Within groups sum of squares",
      main = "Assessing the Optimal Number of Clusters with the Elbow Method",
      pch = 20, cex = 2)
+
+# As we can see, we start to get diminsining returns from k = 6 onwards 
