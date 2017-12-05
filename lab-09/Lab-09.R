@@ -113,3 +113,22 @@ D
 
 DFcor =  1 - cor(t(DF)) 
 DFcor
+
+# Part 3: Calcualte the different models by linkage 
+
+# a: Complete
+
+complete_fit <-hclust(D, method = "complete")
+
+
+# b: Average
+
+average_fit <- hclust(D, method = "average")
+  
+# c: Single
+
+single_fit <- hclust(D, method = "single")
+  
+# d: Centroid
+
+centroid_fit <- hclust(D, method = "centroid")
