@@ -71,6 +71,7 @@ for(i in 1:15){
 
 totWithinSS
 
+
 # Part 7: Plot results and find optimal value
 
 plot(1:15, totWithinSS, type = "b", xlab="Number of Clusters",
@@ -79,3 +80,22 @@ plot(1:15, totWithinSS, type = "b", xlab="Number of Clusters",
      pch = 20, cex = 2)
 
 # As we can see, we start to get diminsining returns from k = 6 onwards 
+
+
+# Part 8: Plot the clusters for the optimal value fo k (K = 6)
+
+set.seed(1)
+
+dat_k6_100 = kmeans(dat,6,nstart = 100)
+
+plot(dat, col =(dat_k6_100$cluster +1) , main = "K-Means result with 6 clusters", pch = 20, cex = 2)
+
+
+# Hierarchical Clustering
+
+# Load dataset
+
+DF = read.csv("..\\week10\\Ch10Ex11.csv", header = FALSE)
+
+
+
