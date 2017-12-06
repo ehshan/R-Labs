@@ -171,3 +171,9 @@ print(table(predicted = cutree(single_fit, k = 2 ), actual = actual_labels))
 
 # Confusion matrix for controid link
 print(table(predicted = cutree(centroid_fit, k = 2 ), actual = actual_labels))
+
+
+
+# Part 6: Analysis
+
+# Part 5 shows that results will depend on the type of linkage used
