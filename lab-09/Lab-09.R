@@ -149,3 +149,25 @@ plot(average_fit, main = "Average Linkage",cex = 0.9)
 plot(single_fit, main = "Single Linkage",cex = 0.9)
 
 plot(centroid_fit, main = "Centroid Linkage",cex = 0.9)
+
+
+
+# Part 5: Confusion Matrix
+
+# As there are 20 heathy and 20 unhealthy samples
+# Labels will be - first 20 healthy, second 20 - unhealthy
+actual_labels <- c(rep(0,20), rep(1,20))
+
+# Cut the tree at 2
+
+# Confusion matrix for complete link
+print(table(predicted = cutree(complete_fit, k = 2 ), actual = actual_labels))
+
+# Confusion matrix for average link
+print(table(predicted = cutree(average_fit, k = 2 ), actual = actual_labels)) 
+
+# Confusion matrix for single link
+print(table(predicted = cutree(single_fit, k = 2 ), actual = actual_labels))
+
+# Confusion matrix for controid link
+print(table(predicted = cutree(centroid_fit, k = 2 ), actual = actual_labels))
