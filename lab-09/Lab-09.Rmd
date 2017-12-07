@@ -36,7 +36,7 @@ plot(dat, main = "% of favourable responses to Learning and Privilege", pch = 20
 
 ## Part 2: Perform k-means with 2 clusters, and a single starting point
 
-For our first experiement, we will use K-Means, with 2 cluster centers, and 1 start position for our cluster centers.
+For our first experiment, we will use K-Means, with 2 cluster centers, and 1 start position for our cluster centers.
 ```{r}
 set.seed(1)
 
@@ -48,7 +48,7 @@ dat_k2_1$cluster
 
 ## Part 3: Calcualte the total within clusters sum of squares (SOS for all clusters)
 
-To measure the sucessful of our K-Means algorithim, we can check the total sum of squares for all our clusters. The lower the figure the better the clustering.
+To measure the success of our K-Means algorithm, we can check the total sum of squares for all our clusters. The lower the figure the better the clustering.
 ```{r}
 dat_k2_1$tot.withinss
 ```
@@ -64,7 +64,7 @@ plot(dat, col = (dat_k2_1$cluster +1) , main = "K-Means result with 2 clusters",
 
 ## Part 5: Perform k-means with 2 clusters, and 100 starting points
 
-Next will will repeat the experiement, but use 100 different starting positions for our cluster centers, and take the best result. We can then compare the total sum of sqaures with our original value.
+Next will will repeat the experiment, but use 100 different starting positions for our cluster centers, and take the best result. We can then compare the total sum of squares with our original value.
 ```{r}
 set.seed(1)
 
@@ -107,7 +107,7 @@ As we can see, the value decreases in line with the number of clusters.
 
 ## Part 7: Plot results and find optimal value
 
-To find the optimal value, we can plot our resulting vector, to find the optimal result. We will iused the Elbow method to find the point were the improvement in the sum of squares starts to decrease.
+To find the optimal value, we can plot our resulting vector, to find the optimal result. We will use the Elbow method to find the point were the improvement in the sum of squares starts to decrease.
 ```{r}
 plot(1:15, totWithinSS, type = "b", xlab="Number of Clusters",
      ylab = "Within groups sum of squares",
@@ -115,7 +115,7 @@ plot(1:15, totWithinSS, type = "b", xlab="Number of Clusters",
      pch = 20, cex = 2)
 ```
 
-As we can see, we start to get diminsining returns from k = 6 onwards.
+As we can see, we start to get diminishing returns from k = 6 onwards.
 
 
 ## Part 8: Plot the clusters for the optimal value fo k (K = 6)
@@ -128,3 +128,106 @@ dat_k6_100 <- kmeans(dat,6,nstart = 100)
 
 plot(dat, col = (dat_k6_100$cluster +1) , main = "K-Means result with 6 clusters", pch = 20, cex = 2)
 ```
+
+
+
+# Hierarchical Clustering
+
+##  Load dataset
+
+First we will load the dataset from our local csv file.
+```{r}
+DF <- read.csv("..\\..\\week10\\Ch10Ex11.csv", header = FALSE)
+```
+
+## Part 1: Transposed dataset
+
+For the next stage, we will transpose the resulting matrix, for a more intuitive interpretation of the data. 
+```{r}
+DF <- t(DF)
+```
+
+## Part 2: Calculate the dissimilarity metric
+
+Now we will calculate the dissimilarity metric.
+```{r}
+# cor computes the correlation of *columns* so we need to take the transpose of DF
+D = as.dist( 1 - cor(t(DF)))
+#D
+
+DFcor =  1 - cor(t(DF)) 
+#DFcor
+```
+
+## Part 3: Calculate the different models by linkage 
+
+We will now build 4 models, each using a differnt form of cluster linkage.
+
+### a: Complete
+```{r}
+complete_fit <-hclust(D, method = "complete")
+```
+
+### b: Average
+```{r}
+average_fit <- hclust(D, method = "average")
+```
+
+### c: Single
+```{r}
+single_fit <- hclust(D, method = "single")
+```
+
+### d: Centroid
+```{r}
+centroid_fit <- hclust(D, method = "centroid")
+```
+
+
+## # Part 4: Plot models
+
+We can plot our 4 model to visualise the differences.
+```{r}
+# split the plot space
+par(mfrow=c(2,2))
+
+# Plot models 
+
+plot(complete_fit, main = "Complete Linkage",cex = 0.9)
+
+plot(average_fit, main = "Average Linkage",cex = 0.9)
+
+plot(single_fit, main = "Single Linkage",cex = 0.9)
+
+plot(centroid_fit, main = "Centroid Linkage",cex = 0.9)
+```
+
+## Part 5: Confusion Matrix
+
+To see which model performs best, we will compute the confusion matrix for each.
+
+First we need to create a label vector representing the actual values in the dataset. As there are 20 healthy and 20 unhealthy samples, we will assign the first 20 values as healthy, and the second 20 as unhealthy.
+```{r}
+actual_labels <- c(rep(0,20), rep(1,20))
+```
+
+```{r}
+print(table(predicted = cutree(complete_fit, k = 2 ), actual = actual_labels))
+```
+
+```{r}
+print(table(predicted = cutree(average_fit, k = 2 ), actual = actual_labels)) 
+```
+
+```{r}
+print(table(predicted = cutree(single_fit, k = 2 ), actual = actual_labels))
+```
+
+```{r}
+print(table(predicted = cutree(centroid_fit, k = 2 ), actual = actual_labels))
+```
+
+
+# Part 6: Analysis
+
+Part 5 shows that results will depend on the type of linkage used.
