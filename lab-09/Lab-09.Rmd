@@ -1,0 +1,130 @@
+---
+title: "Lab-09"
+author: "Ehshan Veerabangsa"
+date: "7 December 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# K-Means Clustering
+
+## Load Data
+
+First we need to load the dataset. For these experiments we will use a subset of the data, using only the features Learning & Privilege, to avoid the need for PCA.
+```{r}
+library(datasets)
+dat = attitude[,c(3,4)]
+```
+
+We can explore the data and its features by using the "?" command. 
+```{r}
+#?attitude
+```
+
+
+## Part 1: Plot data
+
+We can create a 2D plot of the dataset using the two extracted features.   
+```{r}
+plot(dat, main = "% of favourable responses to Learning and Privilege", pch = 20, cex = 2)
+```
+
+
+
+## Part 2: Perform k-means with 2 clusters, and a single starting point
+
+For our first experiement, we will use K-Means, with 2 cluster centers, and 1 start position for our cluster centers.
+```{r}
+set.seed(1)
+
+dat_k2_1 <- kmeans(dat,2, nstart = 1)
+
+dat_k2_1$cluster
+```
+
+
+## Part 3: Calcualte the total within clusters sum of squares (SOS for all clusters)
+
+To measure the sucessful of our K-Means algorithim, we can check the total sum of squares for all our clusters. The lower the figure the better the clustering.
+```{r}
+dat_k2_1$tot.withinss
+```
+
+
+## Part 4: Plot the Clustering results
+
+We can visualise our K-Means result by plotting the outcome.
+```{r}
+plot(dat, col = (dat_k2_1$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
+```
+
+
+## Part 5: Perform k-means with 2 clusters, and 100 starting points
+
+Next will will repeat the experiement, but use 100 different starting positions for our cluster centers, and take the best result. We can then compare the total sum of sqaures with our original value.
+```{r}
+set.seed(1)
+
+dat_k2_100 <- kmeans(dat,2, nstart = 100)
+
+dat_k2_100$cluster
+
+dat_k2_100$tot.withinss
+```
+
+As we can see, the total sum of squares gives the same value.
+
+
+Now we can plot the results from our new model.
+```{r}
+plot(dat, col = (dat_k2_100$cluster +1) , main = "K-Means result with 2 clusters", pch = 20, cex = 2)
+```
+
+Again, we see the same resulting clusters.
+
+
+## Part 6: Find best K value
+
+To obtain the best value for K, we can use a loop, to create several different model, and return each total sum of squares value in a vector.
+```{r}
+# initialise vector to hold results
+totWithinSS <- rep(0,15)
+
+# capture total sum of squares for all k values 1-15
+for(i in 1:15){
+  set.seed(1)
+  totWithinSS[i] = kmeans(dat,i,nstart = 100)$tot.withinss
+}
+
+totWithinSS
+```
+
+As we can see, the value decreases in line with the number of clusters. 
+
+
+## Part 7: Plot results and find optimal value
+
+To find the optimal value, we can plot our resulting vector, to find the optimal result. We will iused the Elbow method to find the point were the improvement in the sum of squares starts to decrease.
+```{r}
+plot(1:15, totWithinSS, type = "b", xlab="Number of Clusters",
+     ylab = "Within groups sum of squares",
+     main = "Assessing the Optimal Number of Clusters with the Elbow Method",
+     pch = 20, cex = 2)
+```
+
+As we can see, we start to get diminsining returns from k = 6 onwards.
+
+
+## Part 8: Plot the clusters for the optimal value fo k (K = 6)
+
+Finally, we can plot the results from our optimal K-Means model.
+```{r}
+set.seed(1)
+
+dat_k6_100 <- kmeans(dat,6,nstart = 100)
+
+plot(dat, col = (dat_k6_100$cluster +1) , main = "K-Means result with 6 clusters", pch = 20, cex = 2)
+```
