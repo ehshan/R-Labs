@@ -65,3 +65,8 @@ pca$scale
 # d: Rotation
 
 pca$rotation
+
+
+# Part 5: Plot of first 2 PCAs
+
+biplot(pca, scale=0)
