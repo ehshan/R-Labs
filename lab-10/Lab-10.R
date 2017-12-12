@@ -72,7 +72,7 @@ pca$rotation
 biplot(pca, scale=0)
 
 
-# Part 6: PCA Standard Deviation & Varaince
+# Part 6: /.5666666666666666666666666o
 
 # a: Standard Deviation
 
@@ -87,3 +87,15 @@ pca_var
 
 pve = pca_var /sum(pca_var )
 pve
+
+
+# Part 7: PVE Plots
+
+# a: PVE per component
+
+plot(pve, xlab = " Principal Component ", ylab =" Proportion of Variance Explained ", ylim = c(0,1) ,type = 'b')
+
+
+# b: Cumulative PVE
+
+plot(cumsum (pve), xlab = " Principal Component ", ylab =" Cumulative Proportion of Variance Explained ", ylim = c(0,1), type = 'b')
