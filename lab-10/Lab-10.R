@@ -70,3 +70,20 @@ pca$rotation
 # Part 5: Plot of first 2 PCAs
 
 biplot(pca, scale=0)
+
+
+# Part 6: PCA Standard Deviation & Varaince
+
+# a: Standard Deviation
+
+pca$sdev
+
+# b: Variance
+
+pca_var = pca$sdev^2
+
+pca_var
+
+
+pve = pca_var /sum(pca_var )
+pve
