@@ -46,3 +46,22 @@ apply(USArrests, 2, var)
 pca <- prcomp(USArrests, scale = TRUE)
 
 pca
+
+
+# Part 4; Check the results, report the number of PCs and their center, scale, and rotation
+
+# a: Number of PCAs
+
+names(pca)
+
+# b: Center
+
+pca$center
+
+# c: Scale
+
+pca$scale
+
+# d: Rotation
+
+pca$rotation
