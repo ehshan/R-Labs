@@ -39,3 +39,10 @@ apply(USArrests, 2, var)
 
 # As assault has by far the largest values for both tables, scaling will be required before PCA to avoid it
 # dominating it.
+
+
+# Part 3: Principal Component Analysis
+
+pca <- prcomp(USArrests, scale = TRUE)
+
+pca
