@@ -1,0 +1,139 @@
+---
+title: "Lab-10"
+author: "Ehshan Veerabangsa"
+date: "12 December 2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Principal Component Analysis
+
+
+## Explore Dataset
+
+
+To begin, let us examine the dataset features.
+```{r}
+# List all rows headers
+states = row.names(USArrests)
+
+states
+
+# List all column headers
+names(USArrests)
+```
+
+
+## Part 1: Calculate the mean and variance of each column
+
+To compute the mean and variance of each column we can use the apply function, with the dataset and function as parameters. We will select 2 as our second parameter as we want to apply the function column-wise.
+
+Calculate the mean.
+```{r}
+apply(USArrests, 2, mean)
+```
+
+Calculate the variance.
+```{r}
+apply(USArrests, 2, var)
+```
+
+
+## Part 2: Dataset Analysis
+
+
+If we look at the mean table, we can see that there is around 3 times more rapes than murders, & around 8 times more assaults than rapes.
+
+When we consider the variance table, we notice that, for the 3 crimes, assault has by the largest variance, followed by rape. Generally the higher variance can be correlated higher mean crime rate. 
+
+We Should also note that the figures for Urban population have no real relationship with the crime averages as they are taken as a rate per 100000
+
+As assault has by far the largest values for both tables, scaling will be required before PCA to avoid it dominating it.
+
+
+## Part 3: Principal Component Analysis
+
+To perform Principal Component Analysis, we can call the prcomp function on the dataset. We has set the scale parameter to true, for the reasons given in part 2.
+```{r}
+pca <- prcomp(USArrests, scale = TRUE)
+
+pca
+```
+
+
+## Part 4; Check the results, report the number of PCs and their center, scale, and rotation
+
+We can pnow use our PCA model to extract some of the results of our analysis.
+
+The Number of PCAs.
+```{r}
+names(pca)
+```
+
+The PC Centers.
+```{r}
+pca$center
+```
+
+The PC Scales.
+```{r}
+pca$scale
+```
+
+The PC Rotations.
+```{r}
+pca$rotation
+```
+
+
+
+# Part 5: Plot of first 2 PCAs
+
+To plot the first 2 PCs, we can use the biplot() function.
+```{r}
+biplot(pca, scale=0)
+```
+
+
+## Part 6: Standard Deviation & Variance of components
+
+We can also look at some statistical average from our PCA.
+
+Standard Deviation.
+```{r}
+pca$sdev
+
+```
+
+Variance.
+```{r}
+pca_var = pca$sdev^2
+
+pca_var
+```
+
+
+## Part 7: PVE Plots
+
+To decipher how much information from a dataset is lost by removing principal components, we can calculate
+the proportion of variance explained (PVE) for each component, and visualise the results in a scree plot.
+```{r}
+# each component / total variance
+pve = pca_var /sum(pca_var)
+pve
+```
+
+```{r}
+plot(pve, xlab = " Principal Component ", ylab =" Proportion of Variance Explained ", ylim = c(0,1) ,type = 'b')
+```
+
+
+We can also plot the cumulative PVE of each principal component.
+```{r}
+plot(cumsum (pve), xlab = " Principal Component ", ylab =" Cumulative Proportion of Variance Explained ", ylim = c(0,1), type = 'b')
+```
