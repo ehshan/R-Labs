@@ -17,4 +17,10 @@ states
 names(USArrests)
 
 
+# Part 1: Calculate the mean and variance of each column
 
+# Calculate the means
+apply(USArrests, 2, mean)
+
+# calculate the variance
+apply(USArrests, 2, var)
